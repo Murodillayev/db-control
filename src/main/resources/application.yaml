@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    username: macbookpro
+    password: 19801980
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/db_control
+
+  jpa:
+    hibernate:
+      ddl-auto: create # default none
+    show-sql: true
+server:
+  port: 1111
+
