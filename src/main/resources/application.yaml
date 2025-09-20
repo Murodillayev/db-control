@@ -5,6 +5,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/db_control
 
+  security:
+    user:
+      password: 123
+      name: admin
   jpa:
     hibernate:
       ddl-auto: create # default none
