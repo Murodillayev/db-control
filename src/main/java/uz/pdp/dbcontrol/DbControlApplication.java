@@ -20,7 +20,7 @@ public class DbControlApplication {
     }
 
 
-//    @Bean
+    @Bean
     CommandLineRunner run(
             AuthUserRepository authUserRepository,
             AuthRoleRepository authRoleRespository,

@@ -13,6 +13,7 @@ spring:
     hibernate:
       ddl-auto: create # default none
     show-sql: true
-server:
-  port: 1111
 
+springdoc:
+  swagger-ui:
+    path: /sw
