@@ -1,7 +1,7 @@
 package uz.pdp.dbcontrol.service;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.dbcontrol.config.jwt.JwtUtil;
@@ -35,12 +35,30 @@ public class AuthUserService {
             throw new BadCredentialsException("Bad credentials");
         }
 
-        TokenDto dto = jwtUtil.generateAccessToken(authUser);
-
+        TokenDto accessToken = jwtUtil.generateAccessToken(authUser);
+        TokenDto refreshToken = jwtUtil.generateRefreshToken(authUser);
         return LoginResponse.builder()
-                .accessToken(dto.getToken())
-                .accessTokenExpiration(dto.getExpiry())
+                .accessToken(accessToken.getToken())
+                .accessTokenExpiration(accessToken.getExpiry())
+                .refreshToken(refreshToken.getToken())
+                .refreshTokenExpiration(refreshToken.getExpiry())
                 .build();
 
+    }
+
+    public LoginResponse refreshToken(String refreshToken) {
+        Claims claims = jwtUtil.validateTokenAndExtract("Bearer " + refreshToken);
+        String username = claims.getSubject();
+        AuthUser authUser = repository.findByUsernameAndDeletedFalse(username).orElseThrow(
+                () -> new BadCredentialsException("Bad credentials")
+        );
+        TokenDto accessToken = jwtUtil.generateAccessToken(authUser);
+
+        return LoginResponse.builder()
+                .accessToken(accessToken.getToken())
+                .accessTokenExpiration(accessToken.getExpiry())
+                .refreshToken(refreshToken)
+                .refreshTokenExpiration(claims.getExpiration())
+                .build();
     }
 }

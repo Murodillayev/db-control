@@ -10,4 +10,7 @@ import java.util.Date;
 public class LoginResponse {
     private String accessToken;
     private Date accessTokenExpiration;
+
+    private String refreshToken;
+    private Date refreshTokenExpiration;
 }
