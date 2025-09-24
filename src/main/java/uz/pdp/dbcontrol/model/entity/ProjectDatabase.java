@@ -29,8 +29,4 @@ public class ProjectDatabase extends BaseEntity {
 
     @OneToMany
     private List<AuthUser> members;
-
-
-
-
 }

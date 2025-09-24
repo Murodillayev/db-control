@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol.dto.authrole;
+package uz.pdp.dbcontrol.dto.projectdatabase;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRoleDto {
+public class ProjectDatabaseUpdateDto {
     private String id;
     private String name;
-    private String code;
-    private List<String> permissionIds;
+    private String description;
+    private String agentId;
+    private List<String> memberIds;
 }

@@ -1,17 +1,14 @@
-package uz.pdp.dbcontrol.dto.authrole;
+package uz.pdp.dbcontrol.dto.databaserole;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRoleDto {
-    private String id;
+public class DatabaseRoleCreateDto {
     private String name;
     private String code;
-    private List<String> permissionIds;
+    private String description;
 }
