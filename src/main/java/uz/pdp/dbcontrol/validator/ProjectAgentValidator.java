@@ -3,7 +3,6 @@ package uz.pdp.dbcontrol.validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentCreateDto;
-import uz.pdp.dbcontrol.model.dto.ProjectAgentDto;
 import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 import uz.pdp.dbcontrol.repository.ProjectAgentRepository;
 

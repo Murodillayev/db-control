@@ -3,6 +3,7 @@ package uz.pdp.dbcontrol.service;
 import org.springframework.stereotype.Service;
 import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.mapper.ProjectAgentMapper;
+import uz.pdp.dbcontrol.mapper.ProjectAgentMapperOld;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentDto;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentUpdateDto;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @Service
 public class ProjectAgentService
-        extends AbstractService<ProjectAgentRepository, ProjectAgentMapper, ProjectAgentValidator>
+        extends AbstractService<ProjectAgentRepository, ProjectAgentMapperOld, ProjectAgentValidator>
         implements CrudService<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto, BaseCriteria, String> {
 
-    public ProjectAgentService(ProjectAgentRepository repository, ProjectAgentMapper mapper, ProjectAgentValidator validator) {
+
+    public ProjectAgentService(ProjectAgentRepository repository, ProjectAgentMapperOld mapper, ProjectAgentValidator validator) {
         super(repository, mapper, validator);
     }
 
@@ -27,7 +29,8 @@ public class ProjectAgentService
     @Override
     public ProjectAgentDto create(ProjectAgentCreateDto dto) {
         validator.validateOnCreate(dto);
-        ProjectAgent projectAgent = mapper.fromDto(dto);
+//        ProjectAgent projectAgent = mapper.fromDto(dto);
+        ProjectAgent projectAgent = ProjectAgentMapper.INSTANCE.fromDto(dto);
         return mapper.toDto(repository.save(projectAgent));
     }
 

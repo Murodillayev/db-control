@@ -16,7 +16,7 @@ public class JwtUtil {
 
 
     public TokenDto generateRefreshToken(AuthUser authUser) {
-        Date tokenExpire = new Date(System.currentTimeMillis() + 3600 * 24 * 1000);
+        Date tokenExpire = new Date(System.currentTimeMillis() + 3600 * 48 * 1000);
         String token = Jwts.builder()
                 .signWith(getSecretKey())
                 .issuedAt(new Date())
@@ -33,7 +33,7 @@ public class JwtUtil {
     }
     public TokenDto generateAccessToken(AuthUser authUser) {
 
-        Date tokenExpire = new Date(System.currentTimeMillis() + 20 * 1000);
+        Date tokenExpire = new Date(System.currentTimeMillis() + 3600 * 24 * 1000);
 
         String token = Jwts.builder()
                 .signWith(getSecretKey())
@@ -64,11 +64,11 @@ public class JwtUtil {
 
     }
 
-    private Claims extractClaims(String refreshToken) {
+    private Claims extractClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
-                .parseSignedClaims(refreshToken)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 

@@ -21,9 +21,17 @@ public class AuthUserController {
 //        return new ResponseEntity<>(service.login(request), HttpStatus.OK);
         return ResponseEntity.ok(service.login(request));
     }
-//
+
+    //
     @PostMapping("/refresh-token")
     public ResponseEntity<LoginResponse> refreshToken(@RequestParam String refreshToken) {
         return ResponseEntity.ok(service.refreshToken(refreshToken));
     }
 }
+
+// mapstruct
+// properties yml
+// Async
+
+// dto -> model
+// model -> dto
