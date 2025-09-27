@@ -4,8 +4,8 @@ package uz.pdp.dbcontrol.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.dbcontrol.model.dto.LoginRequest;
-import uz.pdp.dbcontrol.model.dto.LoginResponse;
+import uz.pdp.dbcontrol.model.dto.*;
+import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.service.AuthUserService;
 
 @RestController
@@ -27,11 +27,10 @@ public class AuthUserController {
     public ResponseEntity<LoginResponse> refreshToken(@RequestParam String refreshToken) {
         return ResponseEntity.ok(service.refreshToken(refreshToken));
     }
+
+    @PostMapping
+    public ResponseEntity<AuthUserDto> create(@RequestBody AuthUserSaveDto dto) {
+        AuthUserDto authUserDto = service.create(dto);
+        return ResponseEntity.ok(authUserDto);
+    }
 }
-
-// mapstruct
-// properties yml
-// Async
-
-// dto -> model
-// model -> dto
