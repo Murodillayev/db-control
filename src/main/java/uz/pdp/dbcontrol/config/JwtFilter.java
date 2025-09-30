@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,15 +19,11 @@ import uz.pdp.dbcontrol.config.jwt.JwtUtil;
 import uz.pdp.dbcontrol.model.entity.AuthPermission;
 import uz.pdp.dbcontrol.model.entity.AuthRole;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
-import uz.pdp.dbcontrol.repository.AuthRoleRepository;
 import uz.pdp.dbcontrol.repository.AuthUserRepository;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

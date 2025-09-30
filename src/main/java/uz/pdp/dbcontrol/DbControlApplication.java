@@ -3,7 +3,6 @@ package uz.pdp.dbcontrol;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import uz.pdp.dbcontrol.model.entity.AuthRole;
@@ -22,7 +21,7 @@ public class DbControlApplication {
     }
 
 
-//    @Bean
+    //    @Bean
     CommandLineRunner run(
             AuthUserRepository authUserRepository,
             AuthRoleRepository authRoleRespository,

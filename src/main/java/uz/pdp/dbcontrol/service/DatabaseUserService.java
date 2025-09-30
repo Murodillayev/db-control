@@ -3,6 +3,7 @@ package uz.pdp.dbcontrol.service;
 import org.springframework.stereotype.Service;
 import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.mapper.ProjectDatabaseUserMapper;
+import uz.pdp.dbcontrol.model.dto.DataResponse;
 import uz.pdp.dbcontrol.model.dto.DatabaseUserCreateDto;
 import uz.pdp.dbcontrol.model.dto.DatabaseUserDto;
 import uz.pdp.dbcontrol.repository.ProjectDatabaseUserRepository;
@@ -37,8 +38,8 @@ public  class DatabaseUserService
     }
 
     @Override
-    public List<DatabaseUserDto> getAll(BaseCriteria criteria) {
-        return List.of();
+    public DataResponse<List<DatabaseUserDto>> getAll(BaseCriteria criteria) {
+        return null;
     }
 
     @Override

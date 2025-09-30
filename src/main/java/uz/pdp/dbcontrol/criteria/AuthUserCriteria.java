@@ -1,7 +1,9 @@
 package uz.pdp.dbcontrol.criteria;
 
-import org.springframework.stereotype.Component;
+public class AuthUserCriteria extends BaseCriteria {
 
-@Component
-public class AuthUserCriteria {
+
+    public AuthUserCriteria(Integer size, Integer page, String search) {
+        super(size, page, search);
+    }
 }

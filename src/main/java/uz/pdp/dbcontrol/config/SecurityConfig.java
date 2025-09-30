@@ -25,7 +25,8 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/swagger-resources",
             "/api/v1/auth/refresh-token",
-            "/sw"
+            "/sw",
+            "/web/**"
     };
 
     private final JwtFilter jwtFilter;
@@ -45,7 +46,11 @@ public class SecurityConfig {
                             .authenticated();
                 })
                 .sessionManagement(sessionManagement -> {
+                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .formLogin(formLogin -> {
+                    formLogin.loginPage("/web/login");
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

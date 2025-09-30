@@ -2,8 +2,8 @@ package uz.pdp.dbcontrol.service;
 
 import org.springframework.stereotype.Service;
 import uz.pdp.dbcontrol.criteria.BaseCriteria;
-import uz.pdp.dbcontrol.mapper.ProjectAgentMapper;
 import uz.pdp.dbcontrol.mapper.ProjectAgentMapperOld;
+import uz.pdp.dbcontrol.model.dto.DataResponse;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentDto;
 import uz.pdp.dbcontrol.model.dto.ProjectAgentUpdateDto;
@@ -42,9 +42,9 @@ public class ProjectAgentService
     }
 
     @Override
-    public List<ProjectAgentDto> getAll(BaseCriteria criteria) {
+    public DataResponse<List<ProjectAgentDto>> getAll(BaseCriteria criteria) {
 
-        return List.of();
+        return null;
     }
 
     @Override

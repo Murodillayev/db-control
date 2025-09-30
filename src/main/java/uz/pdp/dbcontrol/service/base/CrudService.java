@@ -1,5 +1,7 @@
 package uz.pdp.dbcontrol.service.base;
 
+import uz.pdp.dbcontrol.model.dto.DataResponse;
+
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public interface CrudService<D, CD, UD, C, K> {
 
     D get(K id);
 
-    List<D> getAll(C criteria);
+    DataResponse<List<D>> getAll(C criteria);
 
     D update(UD dto, K id);
 

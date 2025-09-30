@@ -8,7 +8,7 @@ import java.util.Date;
 @Builder
 @Data
 public class LoginResponse {
-    private String accessToken;
+    private String token;
     private Date accessTokenExpiration;
 
     private String refreshToken;

@@ -4,17 +4,16 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
 
-@Service
-public class EmailService implements NotifyService {
+@Service("email-notify")
+public class EmailNotifyService implements NotifyService {
 
     private final JavaMailSender mailSender;
 
-    public EmailService(JavaMailSender mailSender) {
+    public EmailNotifyService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
@@ -23,18 +22,6 @@ public class EmailService implements NotifyService {
     public void sendUserCredentials(AuthUser authUser) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
-//            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//            helper.setTo(authUser.getEmail());
-//            helper.setSubject(subject);
-//            helper.setText(htmlBody, true); // true - HTML formatini yoqish
-
-            // Agar fayl qo‘shish kerak bo‘lsa
-//            if (attachmentPath != null && !attachmentPath.isEmpty()) {
-//                FileSystemResource file = new FileSystemResource(new File(attachmentPath));
-//                helper.addAttachment(file.getFilename(), file);
-
-
-//            }
 
             String subject = """
                     Salom %s

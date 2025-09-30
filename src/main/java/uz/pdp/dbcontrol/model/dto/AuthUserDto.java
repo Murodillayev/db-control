@@ -9,6 +9,8 @@ import lombok.Setter;
 @Builder
 public class AuthUserDto {
     private String id;
+    private String fullName;
+
     private String username;
     private String dbUsername;
     private String dbPassword;
