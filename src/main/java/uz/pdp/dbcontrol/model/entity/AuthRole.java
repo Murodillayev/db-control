@@ -1,9 +1,6 @@
 package uz.pdp.dbcontrol.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +18,7 @@ public class AuthRole extends IdEntity {
     private String name;
     private String code;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "auth_role_permission",
             joinColumns = @JoinColumn(name = "role_id"),

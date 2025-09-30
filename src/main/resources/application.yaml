@@ -1,18 +1,18 @@
 spring:
   datasource:
-    username: macbookpro
-    password: 19801980
+    username: postgres
+    password: 1234
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/db_control
 
-  security:
-    user:
-      password: 123
-      name: admin
   jpa:
     hibernate:
-      ddl-auto: create # default none
+      ddl-auto: update # default none
     show-sql: true
 server:
-  port: 1111
+  port: 8080
 
+jwt:
+  secret_key: 753778214125442A472D4B6150645367566B59703373367639792F423F452848
+  access_expiration: 600000
+  refresh_expiration: 604800000
