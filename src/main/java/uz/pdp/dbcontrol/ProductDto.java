@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProductCreateDto {
+public class ProductDto {
     private Integer id;
     @JsonProperty("title")
     private String name;
