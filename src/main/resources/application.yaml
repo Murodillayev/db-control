@@ -5,27 +5,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/db_control
 
-  security:
-    user:
-      password: 123
-      name: admin
-  jpa:
-    hibernate:
-      ddl-auto: update # default none
-    show-sql: true
-
-  mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 587
-    username: 15c581ab473b53
-    password: 13b44caa4b1922
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+application:
+  remote-api:
+    products-api: https://fakestoreapi.com/products
+    product-api: https://fakestoreapi.com/products/{id}
 
 springdoc:
   swagger-ui:
-    path: /sw
+    path: /swd
