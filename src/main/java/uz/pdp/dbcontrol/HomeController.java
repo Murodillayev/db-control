@@ -32,7 +32,7 @@ public class HomeController {
 
     @GetMapping("/{id}")
     public String get(@PathVariable Integer id, Model model) {
-        ResponseEntity<Product> response = productExternalApiResource.getById(id,"askjlhdsaklhjasdjkhhkjlads");
+        ResponseEntity<Product> response = productExternalApiResource.getById(id);
 
         model.addAttribute("products", List.of(response.getBody()));
         return "index";
