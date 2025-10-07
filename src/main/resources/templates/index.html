@@ -1,35 +1,558 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
-
-<input type="text" id="inputMessage">
-
-<script>
-
-    const socket = new WebSocket("ws://localhost:8080/app")
-
-    function sendMessage() {
-        const message = document.getElementById("inputMessage").value;
-        socket.send(message)
-    }
-
-
-    socket.onmessage = (mess) => {
-        console.log(mess)
-    }
-
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            sendMessage()
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 800px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Join Screen */
+        .join-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .join-screen h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .join-screen p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .join-input-group {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        #usernameInput {
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        #usernameInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        #joinButton {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #joinButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        #joinButton:active {
+            transform: translateY(0);
+        }
+
+        #joinButton:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Chat Screen */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-screen.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-title h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .chat-status {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .typing-indicator {
+            min-height: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            align-items: flex-end;
+        }
+
+        .message.received {
+            align-items: flex-start;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            padding: 0 5px;
+        }
+
+        .user-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .message.sent .user-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .sender {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+        }
+
+        .message.sent .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-timestamp {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 4px;
+            padding: 0 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px 25px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        #message-input:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        #send-button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        #send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        #send-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        #send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .chat-container {
+                border-radius: 16px;
+                height: 95vh;
+            }
+
+            .join-screen h1 {
+                font-size: 2rem;
+            }
+
+            .chat-header {
+                padding: 15px 20px;
+            }
+
+            .chat-avatar {
+                width: 40px;
+                height: 40px;
+            }
+
+            .chat-title h2 {
+                font-size: 1.1rem;
+            }
+
+            .chat-messages {
+                padding: 15px;
+            }
+
+            .message-content {
+                max-width: 85%;
+                font-size: 0.9rem;
+                padding: 12px 16px;
+            }
+
+            .chat-input {
+                padding: 15px;
+            }
+
+            #message-input {
+                padding: 12px 18px;
+                font-size: 0.9rem;
+            }
+
+            #send-button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .join-screen {
+                padding: 30px 20px;
+            }
+
+            .join-screen h1 {
+                font-size: 1.8rem;
+            }
+
+            .message-content {
+                max-width: 90%;
+            }
+
+            #send-button {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <!-- Join Screen -->
+    <div class="join-screen" id="joinScreen">
+        <h1>💬 Welcome to Chat</h1>
+        <p>Enter your name to join the conversation</p>
+        <div class="join-input-group">
+            <input type="text" id="usernameInput" placeholder="Your name..." />
+            <button onclick="connect()" id="joinButton">Join Chat</button>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div class="chat-screen" id="chatScreen">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-avatar">💬</div>
+                <div class="chat-title">
+                    <h2>Group Chat</h2>
+                    <div class="typing-indicator" id="typing"></div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type a message..." onkeyup="sendTypingNotify()" />
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let stompClient = null;
+    let sendButton = document.getElementById("send-button");
+    let joinButton = document.getElementById("joinButton");
+    let usernameInput = document.getElementById("usernameInput");
+    let username = null;
+    let typingTimer = null;
+    sendButton.disabled = true;
+
+    function connect() {
+        const inputUsername = usernameInput.value.trim();
+        if (!inputUsername) {
+            alert('Please enter your name');
+            return;
+        }
+
+        const socket = new SockJS('/websocket');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            username = inputUsername;
+            sendButton.disabled = false;
+
+            // Switch to chat screen
+            document.getElementById('joinScreen').style.display = 'none';
+            document.getElementById('chatScreen').classList.add('active');
+
+            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                showMessage(JSON.parse(messageOutput.body));
+            });
+
+            stompClient.subscribe('/topic/typing', (event) => {
+                const typing = document.getElementById('typing');
+                const typingUsername = event.body;
+                if (typingUsername !== username) {
+                    typing.textContent = typingUsername + ' is typing...';
+
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(() => {
+                        typing.textContent = '';
+                    }, 2000);
+                }
+            });
+        });
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('message-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        stompClient.send('/app/send-message', {}, JSON.stringify({
+            content: message,
+            sender: username
+        }));
+        input.value = '';
+    }
+
+    function showMessage(message) {
+        const messagesContainer = document.getElementById('chat-messages');
+        const div = document.createElement('div');
+        const isSent = message.sender === username;
+        div.classList.add('message', isSent ? 'sent' : 'received');
+
+        const icon = isSent ? '👤' : '👥';
+        div.innerHTML = `
+            <div class="message-header">
+                <span class="user-icon">${icon}</span>
+                <span class="sender">${message.sender}</span>
+            </div>
+            <div class="message-content">${escapeHtml(message.content)}</div>
+            <div class="message-timestamp">${new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        })}</div>
+        `;
+        messagesContainer.appendChild(div);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function sendTypingNotify() {
+        if (stompClient && stompClient.connected) {
+            stompClient.send('/app/typing', {}, username);
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    document.getElementById('send-button').addEventListener('click', sendMessage);
+
+    document.getElementById('message-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
     });
 
+    usernameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            connect();
+        }
+    });
 </script>
 </body>
 </html>
