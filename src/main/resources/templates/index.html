@@ -6,15 +6,30 @@
 </head>
 <body>
 
-<h1>Headers</h1>
-<p th:text="${headers}"></p>
-<hr>
-<h1>Status</h1>
-<p th:text="${statusCode}"></p>
-<hr>
-<ul th:each="product : ${products}">
-    <li th:text="${product}"></li>
-</ul>
+<input type="text" id="inputMessage">
 
+<script>
+
+    const socket = new WebSocket("ws://localhost:8080/app")
+
+    function sendMessage() {
+        const message = document.getElementById("inputMessage").value;
+        socket.send(message)
+    }
+
+
+    socket.onmessage = (mess) => {
+        console.log(mess)
+    }
+
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage()
+        }
+
+    });
+
+</script>
 </body>
 </html>
