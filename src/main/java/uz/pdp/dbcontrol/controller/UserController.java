@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.dbcontrol.model.entity.AuthUser;
+import uz.pdp.dbcontrol.model.dto.UserResponseDto;
 import uz.pdp.dbcontrol.service.AuthUserService;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UserController {
     private final AuthUserService service;
     @GetMapping
-    public ResponseEntity<List<AuthUser>> getUsers() {
+    public ResponseEntity<List<UserResponseDto>> getUsers() {
         return ResponseEntity.ok(service.getAllUsers());
     }
 }
