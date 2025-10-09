@@ -13,21 +13,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import uz.pdp.dbcontrol.config.jwt.JwtFilter;
+import uz.pdp.dbcontrol.utils.Utils;
 
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final String[] WHITE_LIST = new String[]{
-            "/api/v1/auth/login",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/swagger-resources",
-            "/api/v1/auth/refresh-token",
-            "/sw",
-            "/web/**"
-    };
+
 
     private final JwtFilter jwtFilter;
 
@@ -40,17 +34,13 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorizeRequests -> {
-                    authorizeRequests.requestMatchers(WHITE_LIST)
+                    authorizeRequests.requestMatchers(Utils.WHITE_LIST)
                             .permitAll()
                             .anyRequest()
                             .authenticated();
                 })
                 .sessionManagement(sessionManagement -> {
-                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
-                .formLogin(formLogin -> {
-                    formLogin.loginPage("/web/login");
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

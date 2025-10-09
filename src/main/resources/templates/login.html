@@ -81,7 +81,6 @@
 
             if (response.ok) {
                 const data = await response.json();
-                // Tokenlarni localStorage ga saqlash
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('refreshToken', data.refreshToken);
                 // Muvaffaqiyatli login bo'lsa, bosh sahifaga yo'naltirish

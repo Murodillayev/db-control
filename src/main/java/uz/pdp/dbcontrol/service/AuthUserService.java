@@ -55,6 +55,8 @@ public class AuthUserService
 
         TokenDto accessToken = jwtUtil.generateAccessToken(authUser);
         TokenDto refreshToken = jwtUtil.generateRefreshToken(authUser);
+
+
         return LoginResponse.builder()
                 .token(accessToken.getToken())
                 .accessTokenExpiration(accessToken.getExpiry())

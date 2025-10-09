@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -47,34 +46,6 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )
-//@SecurityScheme(
-//        name = "basicAuth",
-//        scheme = "basic",
-//        type = SecuritySchemeType.HTTP,
-//        in = SecuritySchemeIn.HEADER
-//)
 public class OpenApiConfig {
-
-//        @Bean
-        public GroupedOpenApi userApi() {
-
-
-                return GroupedOpenApi.builder()
-                        .group("Auth") // Guruh nomi
-                        .pathsToMatch("/api/v1/auth/**") // Guruhga mos keluvchi yo'llar
-                        .build();
-        }
-
-//        @Bean
-        public GroupedOpenApi dbUserApi() {
-
-
-                return GroupedOpenApi.builder()
-                        .group("db user") // Guruh nomi
-                        .pathsToMatch("/api/v1/db-user/**") // Guruhga mos keluvchi yo'llar
-                        .build();
-        }
-
-
 
 }

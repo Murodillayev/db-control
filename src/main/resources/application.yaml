@@ -26,6 +26,14 @@ spring:
           starttls:
             enable: true
 
+
+application:
+  token:
+    access:
+      exp: 86400000
+    refresh:
+      exp: 172800000
+
 springdoc:
   swagger-ui:
     path: /sw
