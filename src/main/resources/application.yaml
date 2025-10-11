@@ -1,38 +1,9 @@
 spring:
-  datasource:
-    username: macbookpro
-    password: 19801980
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/db_control
-
-  security:
-    user:
-      password: 123
-      name: admin
-  jpa:
-    hibernate:
-      ddl-auto: update # default none
-    show-sql: true
-
-  mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 587
-    username: 15c581ab473b53
-    password: 13b44caa4b1922
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/todo_db
 
 
-application:
-  token:
-    access:
-      exp: 86400000
-    refresh:
-      exp: 172800000
 
 springdoc:
   swagger-ui:
