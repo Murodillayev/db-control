@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 jwt:
   secret-access: YWNjZXNzLXNlY3JldC1rZXktZGItY29udHJvbC1zZWN1cmUxMjM0

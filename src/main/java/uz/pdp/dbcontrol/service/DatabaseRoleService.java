@@ -1,6 +1,7 @@
 package uz.pdp.dbcontrol.service;
 
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleCreateDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleUpdateDto;
@@ -16,6 +17,7 @@ public class DatabaseRoleService extends AbstractCrudService<
         DatabaseRoleCreateDto,
         DatabaseRoleUpdateDto,
         DatabaseRoleDto,
+        BaseCriteria,
         DatabaseRoleRepository,
         DatabaseRoleMapper,
         DatabaseRoleBaseValidator

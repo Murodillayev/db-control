@@ -7,12 +7,13 @@ import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionUpdateDto;
 import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.AuthPermission;
+
 @Component
 public class AuthPermissionMapper
         implements BaseMapper<AuthPermissionDto, AuthPermissionCreateDto, AuthPermissionUpdateDto, AuthPermission> {
 
     @Override
-    AuthPermissionDto toDto(AuthPermission entity){
+    public AuthPermissionDto toDto(AuthPermission entity) {
         return AuthPermissionDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())

@@ -1,6 +1,7 @@
 package uz.pdp.dbcontrol.service;
 
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserUpdateDto;
@@ -16,6 +17,7 @@ public class ProjectDatabaseUserService extends AbstractCrudService<
         ProjectDatabaseUserCreateDto,
         ProjectDatabaseUserUpdateDto,
         ProjectDatabaseUserDto,
+        BaseCriteria,
         ProjectDatabaseUserRepository,
         ProjectDatabaseUserMapper,
         ProjectDatabaseUserBaseValidator

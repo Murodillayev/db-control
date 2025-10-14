@@ -3,6 +3,7 @@ package uz.pdp.dbcontrol.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentUpdateDto;
@@ -35,8 +36,18 @@ public class ProjectAgentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectAgentDto>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<List<ProjectAgentDto>> getAll(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        return ResponseEntity.ok(service.getAll(
+                BaseCriteria.builder()
+                        .search(search)
+                        .page(page)
+                        .size(size)
+                        .build()
+        ));
     }
 
     @DeleteMapping("/{id}")

@@ -1,8 +1,14 @@
 package uz.pdp.dbcontrol.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
+import uz.pdp.dbcontrol.dto.AppErrorResponse;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseUpdateDto;
@@ -20,6 +26,16 @@ public class ProjectDatabaseController {
     }
 
     @PostMapping
+    @Operation(summary = "DB yaratish uchun", description = "Bu api orqali database yaratiladi")
+    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "201", description = "Muvaffaqiyatli yaratildi"),
+            @ApiResponse(responseCode = "400", description = "Noto'g'ri so'rov (masalan, validation xatosi)",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AppErrorResponse.class)
+                    ))
+    })
+    @ApiResponse
     public ResponseEntity<ProjectDatabaseDto> create(@RequestBody ProjectDatabaseCreateDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
@@ -35,8 +51,18 @@ public class ProjectDatabaseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDatabaseDto>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<List<ProjectDatabaseDto>> getAll(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        return ResponseEntity.ok(service.getAll(
+                BaseCriteria.builder()
+                        .search(search)
+                        .page(page)
+                        .size(size)
+                        .build()
+        ));
     }
 
     @DeleteMapping("/{id}")

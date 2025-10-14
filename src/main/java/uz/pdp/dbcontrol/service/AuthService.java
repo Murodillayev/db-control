@@ -11,7 +11,7 @@ import uz.pdp.dbcontrol.model.entity.AuthRole;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.repository.AuthRoleRepository;
 import uz.pdp.dbcontrol.repository.AuthUserRepository;
-import uz.pdp.dbcontrol.security.JwtTokenProvider;
+import uz.pdp.dbcontrol.config.security.JwtTokenProvider;
 
 import java.util.HashMap;
 import java.util.Map;

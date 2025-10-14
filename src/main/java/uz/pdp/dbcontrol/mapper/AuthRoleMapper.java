@@ -1,5 +1,6 @@
 package uz.pdp.dbcontrol.mapper;
 
+import org.springframework.stereotype.Component;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleCreateDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleDto;
@@ -9,10 +10,11 @@ import uz.pdp.dbcontrol.model.entity.AuthPermission;
 import uz.pdp.dbcontrol.model.entity.AuthRole;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Component
 public class AuthRoleMapper
         implements BaseMapper<AuthRoleDto, AuthRoleCreateDto, AuthRoleUpdateDto, AuthRole> {
+
     private final AuthPermissionMapper authPermissionMapper;
 
     public AuthRoleMapper(AuthPermissionMapper authPermissionMapper) {

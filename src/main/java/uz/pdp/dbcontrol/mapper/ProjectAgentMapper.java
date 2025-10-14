@@ -13,7 +13,7 @@ import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 public class ProjectAgentMapper
         implements BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
     @Override
-    ProjectAgentDto toDto(ProjectAgent entity){
+    public ProjectAgentDto toDto(ProjectAgent entity){
         return ProjectAgentDto.builder()
                 .id(entity.getId())
                 .callbackUrl(entity.getCallbackUrl())
@@ -23,12 +23,12 @@ public class ProjectAgentMapper
     }
 
     @Override
-    ProjectAgent fromCreateDto(ProjectAgentCreateDto dto){
+    public ProjectAgent fromCreateDto(ProjectAgentCreateDto dto){
         return new ProjectAgent(dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
     }
 
     @Override
-    void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity){
+    public void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity){
         entity.setDatabasePassword(dto.getDatabasePassword());
         entity.setDatabaseUrl(dto.getDatabaseUrl());
         entity.setCallbackUrl(dto.getCallbackUrl());

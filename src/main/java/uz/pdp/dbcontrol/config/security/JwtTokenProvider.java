@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol.security;
+package uz.pdp.dbcontrol.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

@@ -1,6 +1,7 @@
 package uz.pdp.dbcontrol.service;
 
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentUpdateDto;
@@ -16,6 +17,7 @@ public class ProjectAgentService extends AbstractCrudService<
         ProjectAgentCreateDto,
         ProjectAgentUpdateDto,
         ProjectAgentDto,
+        BaseCriteria,
         ProjectAgentRepository,
         ProjectAgentMapper,
         ProjectAgentBaseValidator

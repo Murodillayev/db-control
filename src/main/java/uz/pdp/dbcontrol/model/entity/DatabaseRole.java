@@ -1,5 +1,6 @@
 package uz.pdp.dbcontrol.model.entity;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,9 @@ import uz.pdp.dbcontrol.model.base.BaseEntity;
 @NoArgsConstructor
 @Setter
 @Getter
+@Entity
 public class DatabaseRole extends BaseEntity {
+
     private String name;
     
     private String code;

@@ -1,6 +1,7 @@
 package uz.pdp.dbcontrol.service.base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.base.IdEntity;
@@ -13,10 +14,11 @@ public abstract class AbstractCrudService<
         CD,
         UD,
         D,
+        C extends BaseCriteria,
         R extends JpaRepository<E, String>,
         M extends BaseMapper<D, CD, UD, E>,
         V extends BaseValidator<CD, UD, E>
-        > implements CrudService<CD, UD, D> {
+        > implements CrudService<CD, UD, D, C> {
 
     private final R repository;
     private final M mapper;
@@ -56,18 +58,26 @@ public abstract class AbstractCrudService<
 
     @Override
     public D get(String id) {
-        E entity = repository.findById(id)
-                .filter(e -> !e.isDeleted())
-                .orElseThrow(() -> new NotFoundException("Entity not found"));
+        E entity = validator.existsAndGet(id);
         return mapper.toDto(entity);
     }
 
     @Override
-    public List<D> getAll() {
+    public List<D> getAll(BaseCriteria criteria) {
         return repository.findAll()
                 .stream()
-                .filter(e -> !e.isDeleted())
                 .map(mapper::toDto)
                 .toList();
     }
+
+//    public DataResponse<List<D>> getAll(C criteria) {
+//        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+//        Page<E> page = repository.findAll(pageable);
+//
+//        List<D> content = page.getContent().stream()
+//                .map(mapper::toDto)
+//                .toList();
+//
+//        return new DataResponse<>(content, page.getTotalElements(), page.getTotalPages());
+//    }
 }

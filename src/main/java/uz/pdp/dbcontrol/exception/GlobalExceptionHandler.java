@@ -6,9 +6,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uz.pdp.dbcontrol.dto.AppErrorResponse;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,14 +31,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+    public ResponseEntity<AppErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        AppErrorResponse errorResponse = new AppErrorResponse();
+        StringJoiner joiner = new StringJoiner(", ");
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+            joiner.add(fieldError.getField() + " : " + fieldError.getDefaultMessage());
         }
+        errorResponse.setError(joiner.toString());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setDeveloperMessage(Arrays.toString(ex.getStackTrace()));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
