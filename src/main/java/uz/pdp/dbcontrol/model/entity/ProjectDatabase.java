@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.dbcontrol.model.base.BaseEntity;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-@SQLRestriction("deleted=false")
 public class ProjectDatabase extends BaseEntity {
     private String name;
     private String description;

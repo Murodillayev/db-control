@@ -17,4 +17,6 @@ import java.util.UUID;
 public class IdEntity {
     @Id
     private String id = UUID.randomUUID().toString();
+    private boolean deleted = false;
+
 }

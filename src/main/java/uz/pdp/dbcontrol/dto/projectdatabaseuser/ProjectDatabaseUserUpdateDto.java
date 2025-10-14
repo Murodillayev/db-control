@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDatabaseUserUpdateDto {
-    private String id;
     private String authUserId;
     private String databaseId;
     private List<String> roleIds;

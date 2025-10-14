@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
-import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.dbcontrol.model.base.BaseEntity;
 
 @Entity
@@ -12,7 +11,6 @@ import uz.pdp.dbcontrol.model.base.BaseEntity;
 @NoArgsConstructor
 @Setter
 @Getter
-@SQLRestriction("deleted=false")
 public class AuthUser extends BaseEntity {
     private String username;
     private String password;

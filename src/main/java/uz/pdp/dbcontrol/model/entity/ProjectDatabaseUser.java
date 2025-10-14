@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-@SQLRestriction("deleted=false")
 public class ProjectDatabaseUser extends BaseEntity {
 
     @ManyToOne

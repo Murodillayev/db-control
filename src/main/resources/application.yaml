@@ -7,6 +7,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create # default none
+      ddl-auto: none # default none
     show-sql: true
-
+jwt:
+  secret-access: YWNjZXNzLXNlY3JldC1rZXktZGItY29udHJvbC1zZWN1cmUxMjM0
+  secret-refresh: cmVmcmVzaC1zZWNyZXQta2V5LWRiLWNvbnRyb2wtc2VjdXJlMTIzNA==
+  expiration-access: 600000
+  expiration-refresh: 604800000

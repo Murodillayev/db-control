@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DatabaseRoleUpdateDto {
-    private String id;
     private String name;
     private String code;
     private String description;

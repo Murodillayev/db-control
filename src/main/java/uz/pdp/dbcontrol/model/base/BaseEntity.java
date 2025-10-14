@@ -38,6 +38,4 @@ public class BaseEntity extends IdEntity {
 
     @LastModifiedBy
     private String updatedBy;
-
-    private Boolean deleted = false;
 }

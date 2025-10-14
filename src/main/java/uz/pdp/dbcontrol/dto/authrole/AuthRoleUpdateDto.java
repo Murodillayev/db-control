@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class AuthRoleUpdateDto {
-    private String id;
     private String name;
     private String code;
     private List<String> permissionIds;

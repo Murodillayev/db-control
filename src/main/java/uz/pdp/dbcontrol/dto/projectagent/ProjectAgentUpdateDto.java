@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectAgentUpdateDto {
-    private String id;
     private String databaseUsername;
     private String databasePassword;
     private String databaseUrl;

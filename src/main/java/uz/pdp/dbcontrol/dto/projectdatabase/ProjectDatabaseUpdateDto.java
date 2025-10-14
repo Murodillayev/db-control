@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDatabaseUpdateDto {
-    private String id;
     private String name;
     private String description;
     private String agentId;
