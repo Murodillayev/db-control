@@ -1,24 +1,39 @@
 package uz.pdp.dbcontrol.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleCreateDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleUpdateDto;
 import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.DatabaseRole;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface DatabaseRoleMapper
-        extends BaseMapper<DatabaseRoleDto, DatabaseRoleCreateDto, DatabaseRoleUpdateDto, DatabaseRole> {
+@Component
+public class DatabaseRoleMapper
+        implements BaseMapper<DatabaseRoleDto, DatabaseRoleCreateDto, DatabaseRoleUpdateDto, DatabaseRole> {
 
     @Override
-    DatabaseRoleDto toDto(DatabaseRole entity);
+    public DatabaseRoleDto toDto(DatabaseRole entity) {
+        return DatabaseRoleDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .code(entity.getCode())
+                .description(entity.getDescription())
+                .build();
+    }
 
     @Override
-    DatabaseRole fromCreateDto(DatabaseRoleCreateDto dto);
+    public DatabaseRole fromCreateDto(DatabaseRoleCreateDto dto) {
+        DatabaseRole entity = new DatabaseRole();
+        entity.setName(dto.getName());
+        entity.setCode(dto.getCode());
+        entity.setDescription(dto.getDescription());
+        return entity;
+    }
 
     @Override
-    void fromUpdateDto(DatabaseRoleUpdateDto dto,@MappingTarget DatabaseRole entity);
+    public void fromUpdateDto(DatabaseRoleUpdateDto dto, DatabaseRole entity) {
+        entity.setName(dto.getName());
+        entity.setCode(dto.getCode());
+        entity.setDescription(dto.getDescription());
+    }
 }

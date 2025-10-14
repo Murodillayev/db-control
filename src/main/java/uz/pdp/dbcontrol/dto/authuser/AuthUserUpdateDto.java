@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthUserUpdateDto {
+    private String name;
     private String username;
     private String dbUsername;
     private String dbPassword;

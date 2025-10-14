@@ -8,7 +8,7 @@ import uz.pdp.dbcontrol.service.base.AbstractCrudService;
 import uz.pdp.dbcontrol.mapper.ProjectDatabaseMapper;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabase;
 import uz.pdp.dbcontrol.repository.ProjectDatabaseRepository;
-import uz.pdp.dbcontrol.validation.ProjectDatabaseBaseValidator;
+import uz.pdp.dbcontrol.validation.ProjectDatabaseValidator;
 
 @Service
 public class ProjectDatabaseService extends AbstractCrudService<
@@ -18,9 +18,9 @@ public class ProjectDatabaseService extends AbstractCrudService<
         ProjectDatabaseDto,
         ProjectDatabaseRepository,
         ProjectDatabaseMapper,
-        ProjectDatabaseBaseValidator
+        ProjectDatabaseValidator
         > {
-    public ProjectDatabaseService(ProjectDatabaseRepository repository, ProjectDatabaseMapper mapper, ProjectDatabaseBaseValidator validator) {
+    public ProjectDatabaseService(ProjectDatabaseRepository repository, ProjectDatabaseMapper mapper, ProjectDatabaseValidator validator) {
         super(repository, mapper, validator);
     }
 }

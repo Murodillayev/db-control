@@ -12,6 +12,7 @@ import uz.pdp.dbcontrol.model.base.BaseEntity;
 @Setter
 @Getter
 public class AuthUser extends BaseEntity {
+    private String name;
     private String username;
     private String password;
     private String dbUsername;

@@ -14,7 +14,6 @@ import uz.pdp.dbcontrol.validation.AuthRoleValidator;
 public class AuthUserMapper
         implements BaseMapper<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
 
-
     private final AuthRoleValidator authRoleValidator;
 
     public AuthUserMapper(AuthRoleValidator authRoleValidator) {
@@ -39,12 +38,13 @@ public class AuthUserMapper
 
     @Override
     public AuthUser fromCreateDto(AuthUserCreateDto dto) {
-
+        AuthRole role = authRoleValidator.existsAndGet(dto.getRoleId());
         AuthUser entity = new AuthUser();
         entity.setUsername(dto.getUsername());
+        entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
-        entity.setRole();
-        return null;
+        entity.setRole(role);
+        return entity;
     }
 
     @Override
@@ -52,6 +52,7 @@ public class AuthUserMapper
         AuthRole role = authRoleValidator.existsAndGet(dto.getRoleId());
         entity.setUsername(dto.getUsername());
         entity.setEmail(dto.getEmail());
+        entity.setName(dto.getName());
         entity.setPhone(dto.getPhone());
         entity.setDbUsername(dto.getDbUsername());
         entity.setDbPassword(dto.getDbPassword());

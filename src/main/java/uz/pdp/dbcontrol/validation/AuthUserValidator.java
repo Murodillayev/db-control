@@ -1,17 +1,22 @@
 package uz.pdp.dbcontrol.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserCreateDto;
-import uz.pdp.dbcontrol.dto.authuser.AuthUserDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserUpdateDto;
+import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.exception.ValidationException;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
+import uz.pdp.dbcontrol.repository.AuthUserRepository;
 
 import java.util.regex.Pattern;
 
 @Component
-public class AuthUserBaseValidator implements BaseValidator<AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
+@RequiredArgsConstructor
+public class AuthUserValidator implements BaseValidator<AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
+
+    private final AuthUserRepository repository;
 
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}$");
@@ -55,5 +60,12 @@ public class AuthUserBaseValidator implements BaseValidator<AuthUserCreateDto, A
 
         if (!StringUtils.hasText(dto.getRoleId()))
             throw new ValidationException("User uchun role tanlanmagan");
+    }
+
+    @Override
+    public AuthUser existsAndGet(String id) {
+        return repository.findById(id).orElseThrow(
+                () -> new NotFoundException("User with id " + id + " not found")
+        );
     }
 }

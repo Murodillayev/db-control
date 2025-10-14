@@ -8,7 +8,7 @@ import uz.pdp.dbcontrol.mapper.AuthUserMapper;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.repository.AuthUserRepository;
 import uz.pdp.dbcontrol.service.base.AbstractCrudService;
-import uz.pdp.dbcontrol.validation.AuthUserBaseValidator;
+import uz.pdp.dbcontrol.validation.AuthUserValidator;
 
 @Service
 public class AuthUserService extends AbstractCrudService<
@@ -18,9 +18,9 @@ public class AuthUserService extends AbstractCrudService<
                 AuthUserDto,
                 AuthUserRepository,
                 AuthUserMapper,
-        AuthUserBaseValidator
+        AuthUserValidator
                 > {
-    public AuthUserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserBaseValidator validator) {
+    public AuthUserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator) {
         super(repository, mapper, validator);
     }
 }

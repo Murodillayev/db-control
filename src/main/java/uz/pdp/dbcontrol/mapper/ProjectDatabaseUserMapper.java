@@ -1,9 +1,7 @@
 package uz.pdp.dbcontrol.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
+import uz.pdp.dbcontrol.dto.IdNameDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserUpdateDto;
@@ -12,58 +10,59 @@ import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.model.entity.DatabaseRole;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabase;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
+import uz.pdp.dbcontrol.repository.DatabaseRoleRepository;
+import uz.pdp.dbcontrol.validation.AuthUserValidator;
+import uz.pdp.dbcontrol.validation.ProjectDatabaseValidator;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ProjectDatabaseUserMapper
-        extends BaseMapper<ProjectDatabaseUserDto, ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto, ProjectDatabaseUser> {
+import java.util.List;
+
+@Component
+public class ProjectDatabaseUserMapper
+        implements BaseMapper<
+        ProjectDatabaseUserDto,
+        ProjectDatabaseUserCreateDto,
+        ProjectDatabaseUserUpdateDto,
+        ProjectDatabaseUser> {
+
+    private final ProjectDatabaseValidator projectDatabaseValidator;
+    private final AuthUserValidator authUserValidator;
+    private final DatabaseRoleRepository databaseRoleRepository;
+
+    public ProjectDatabaseUserMapper(ProjectDatabaseValidator projectDatabaseValidator, AuthUserValidator authUserValidator, DatabaseRoleRepository databaseRoleRepository) {
+        this.projectDatabaseValidator = projectDatabaseValidator;
+        this.authUserValidator = authUserValidator;
+        this.databaseRoleRepository = databaseRoleRepository;
+    }
+
     @Override
-    @Mapping(source = "authUser.id", target = "authUserId")
-    @Mapping(source = "database.id", target = "databaseId")
-    @Mapping(source = "roles", target = "roleIds")
-    ProjectDatabaseUserDto toDto(ProjectDatabaseUser entity);
+    public ProjectDatabaseUserDto toDto(ProjectDatabaseUser entity) {
+        List<IdNameDto> dbRoles = entity.getRoles()
+                .stream()
+                .map(dr -> IdNameDto.builder().id(dr.getId()).name(dr.getName()).build())
+                .toList();
+        return ProjectDatabaseUserDto.builder()
+                .id(entity.getId())
+                .roles(dbRoles)
+                .name(entity.getAuthUser().getName())
+                .build();
+    }
 
     @Override
-    @Mapping(source = "authUserId", target = "authUser")
-    @Mapping(source = "databaseId", target = "database")
-    @Mapping(source = "roleIds", target = "roles")
-    ProjectDatabaseUser fromCreateDto(ProjectDatabaseUserCreateDto dto);
+    public ProjectDatabaseUser fromCreateDto(ProjectDatabaseUserCreateDto dto) {
+        ProjectDatabase projectDatabase = projectDatabaseValidator.existsAndGet(dto.getDatabaseId());
+        AuthUser authUser = authUserValidator.existsAndGet(dto.getAuthUserId());
+        List<DatabaseRole> databaseRoles = databaseRoleRepository.findAllByIdIn(dto.getRoleIds());
+
+        ProjectDatabaseUser entity = new ProjectDatabaseUser();
+        entity.setDatabase(projectDatabase);
+        entity.setAuthUser(authUser);
+        entity.setRoles(databaseRoles);
+        return entity;
+    }
 
     @Override
-    @Mapping(source = "authUserId", target = "authUser")
-    @Mapping(source = "databaseId", target = "database")
-    @Mapping(source = "roleIds", target = "roles")
-    void fromUpdateDto(ProjectDatabaseUserUpdateDto dto, @MappingTarget ProjectDatabaseUser entity);
-
-    default String mapAuthUserToId(AuthUser authUser) {
-        return authUser != null ? authUser.getId() : null;
-    }
-
-    default String mapDatabaseToId(ProjectDatabase projectDatabase) {
-        return projectDatabase != null ? projectDatabase.getId() : null;
-    }
-
-    default String mapRoleToId(DatabaseRole databaseRole) {
-        return databaseRole != null ? databaseRole.getId() : null;
-    }
-
-    default AuthUser mapIdToAuthUser(String id) {
-        if (id == null) return null;
-        AuthUser authUser = new AuthUser();
-        authUser.setId(id);
-        return authUser;
-    }
-
-    default ProjectDatabase mapIdToProjectDatabase(String id) {
-        if (id == null) return null;
-        ProjectDatabase projectDatabase = new ProjectDatabase();
-        projectDatabase.setId(id);
-        return projectDatabase;
-    }
-
-    default DatabaseRole mapIdToDatabaseRole(String id) {
-        if (id == null) return null;
-        DatabaseRole databaseRole=new DatabaseRole();
-        databaseRole.setId(id);
-        return databaseRole;
+    public void fromUpdateDto(ProjectDatabaseUserUpdateDto dto, ProjectDatabaseUser entity) {
+        List<DatabaseRole> databaseRoles = databaseRoleRepository.findAllByIdIn(dto.getRoleIds());
+        entity.setRoles(databaseRoles);
     }
 }

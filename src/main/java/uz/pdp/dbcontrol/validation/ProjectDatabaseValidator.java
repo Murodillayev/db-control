@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseCreateDto;
-import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseUpdateDto;
 import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.exception.ValidationException;
@@ -13,7 +12,7 @@ import uz.pdp.dbcontrol.repository.ProjectDatabaseRepository;
 
 @Component
 @RequiredArgsConstructor
-public class ProjectDatabaseBaseValidator
+public class ProjectDatabaseValidator
         implements BaseValidator<ProjectDatabaseCreateDto, ProjectDatabaseUpdateDto, ProjectDatabase> {
 
     private final ProjectDatabaseRepository repository;
