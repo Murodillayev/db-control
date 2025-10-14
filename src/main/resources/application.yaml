@@ -1,13 +1,13 @@
 spring:
   datasource:
-    username: postgres
-    password: math2606
+    username: macbookpro
+    password: 19801980
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/db_control
 
   jpa:
     hibernate:
-      ddl-auto: none # default none
+      ddl-auto: create
     show-sql: true
 jwt:
   secret-access: YWNjZXNzLXNlY3JldC1rZXktZGItY29udHJvbC1zZWN1cmUxMjM0

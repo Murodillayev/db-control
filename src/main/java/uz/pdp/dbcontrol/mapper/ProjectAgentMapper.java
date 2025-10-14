@@ -6,18 +6,18 @@ import org.mapstruct.ReportingPolicy;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentUpdateDto;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProjectAgentMapper
-        extends InterfaceMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
+        extends BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
     @Override
     ProjectAgentDto toDto(ProjectAgent entity);
 
     @Override
-    ProjectAgent toEntityFromCreate(ProjectAgentCreateDto dto);
+    ProjectAgent fromCreateDto(ProjectAgentCreateDto dto);
 
     @Override
-    void updateEntityFromDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity);
+    void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity);
 }

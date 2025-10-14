@@ -5,9 +5,10 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleCreateDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.DatabaseRole;
 
 @Component
-public class DatabaseRoleValidator implements Validator<DatabaseRoleCreateDto, DatabaseRoleUpdateDto> {
+public class DatabaseRoleBaseValidator implements BaseValidator<DatabaseRoleCreateDto, DatabaseRoleUpdateDto, DatabaseRole> {
 
     @Override
     public void validateForCreate(DatabaseRoleCreateDto dto) {

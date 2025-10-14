@@ -6,19 +6,19 @@ import org.mapstruct.ReportingPolicy;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleCreateDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleUpdateDto;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.DatabaseRole;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DatabaseRoleMapper
-        extends InterfaceMapper<DatabaseRoleDto, DatabaseRoleCreateDto, DatabaseRoleUpdateDto, DatabaseRole> {
+        extends BaseMapper<DatabaseRoleDto, DatabaseRoleCreateDto, DatabaseRoleUpdateDto, DatabaseRole> {
 
     @Override
     DatabaseRoleDto toDto(DatabaseRole entity);
 
     @Override
-    DatabaseRole toEntityFromCreate(DatabaseRoleCreateDto dto);
+    DatabaseRole fromCreateDto(DatabaseRoleCreateDto dto);
 
     @Override
-    void updateEntityFromDto(DatabaseRoleUpdateDto dto,@MappingTarget DatabaseRole entity);
+    void fromUpdateDto(DatabaseRoleUpdateDto dto,@MappingTarget DatabaseRole entity);
 }

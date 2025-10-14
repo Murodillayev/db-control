@@ -8,7 +8,7 @@ import uz.pdp.dbcontrol.service.base.AbstractCrudService;
 import uz.pdp.dbcontrol.mapper.DatabaseRoleMapper;
 import uz.pdp.dbcontrol.model.entity.DatabaseRole;
 import uz.pdp.dbcontrol.repository.DatabaseRoleRepository;
-import uz.pdp.dbcontrol.validation.DatabaseRoleValidator;
+import uz.pdp.dbcontrol.validation.DatabaseRoleBaseValidator;
 
 @Service
 public class DatabaseRoleService extends AbstractCrudService<
@@ -18,9 +18,9 @@ public class DatabaseRoleService extends AbstractCrudService<
         DatabaseRoleDto,
         DatabaseRoleRepository,
         DatabaseRoleMapper,
-        DatabaseRoleValidator
+        DatabaseRoleBaseValidator
         > {
-    public DatabaseRoleService(DatabaseRoleRepository repository, DatabaseRoleMapper mapper, DatabaseRoleValidator validator) {
+    public DatabaseRoleService(DatabaseRoleRepository repository, DatabaseRoleMapper mapper, DatabaseRoleBaseValidator validator) {
         super(repository, mapper, validator);
     }
 }

@@ -3,11 +3,14 @@ package uz.pdp.dbcontrol.validation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserCreateDto;
+import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
 
 @Component
-public class ProjectDatabaseUserValidator implements Validator<ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto> {
+public class ProjectDatabaseUserBaseValidator
+        implements BaseValidator<ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto, ProjectDatabaseUser> {
 
     @Override
     public void validateForCreate(ProjectDatabaseUserCreateDto dto) {

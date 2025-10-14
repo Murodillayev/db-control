@@ -13,5 +13,4 @@ public class ProjectDatabaseUpdateDto {
     private String name;
     private String description;
     private String agentId;
-    private List<String> memberIds;
 }

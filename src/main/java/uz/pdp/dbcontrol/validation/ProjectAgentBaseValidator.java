@@ -3,11 +3,14 @@ package uz.pdp.dbcontrol.validation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentCreateDto;
+import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 
 @Component
-public class ProjectAgentValidator implements Validator<ProjectAgentCreateDto, ProjectAgentUpdateDto> {
+public class ProjectAgentBaseValidator
+        implements BaseValidator<ProjectAgentCreateDto, ProjectAgentUpdateDto, ProjectAgent> {
 
     @Override
     public void validateForCreate(ProjectAgentCreateDto dto) {
@@ -43,4 +46,6 @@ public class ProjectAgentValidator implements Validator<ProjectAgentCreateDto, P
         if (!dto.getCallbackUrl().startsWith("http://") && !dto.getCallbackUrl().startsWith("https://"))
             throw new ValidationException("Callback URL noto‘g‘ri formatda kiritilgan (http yoki https bilan boshlanishi kerak)");
     }
+
+
 }

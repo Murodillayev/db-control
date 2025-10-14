@@ -1,52 +1,66 @@
 package uz.pdp.dbcontrol.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseUpdateDto;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
-import uz.pdp.dbcontrol.model.entity.AuthUser;
+import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserDto;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabase;
+import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
+import uz.pdp.dbcontrol.validation.ProjectAgentBaseValidator;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ProjectDatabaseMapper
-        extends InterfaceMapper<ProjectDatabaseDto, ProjectDatabaseCreateDto, ProjectDatabaseUpdateDto, ProjectDatabase> {
+@Component
+public class ProjectDatabaseMapper
+        implements BaseMapper<ProjectDatabaseDto, ProjectDatabaseCreateDto, ProjectDatabaseUpdateDto, ProjectDatabase> {
+    private final ProjectDatabaseUserMapper projectDatabaseUserMapper;
+    private final ProjectAgentBaseValidator projectAgentValidator;
 
-    @Override
-    @Mapping(source = "agent.id", target = "agentId")
-    @Mapping(source = "members", target = "memberIds")
-    ProjectDatabaseDto toDto(ProjectDatabase entity);
-
-    @Override
-    @Mapping(source = "agentId", target = "agent")
-    @Mapping(source = "memberIds", target = "members")
-    ProjectDatabase toEntityFromCreate(ProjectDatabaseCreateDto dto);
-
-    @Override
-    @Mapping(source = "agentId", target = "agent")
-    @Mapping(source = "memberIds", target = "members")
-    void updateEntityFromDto(ProjectDatabaseUpdateDto dto,@MappingTarget ProjectDatabase entity);
-
-    default String mapAuthUserToId(AuthUser authUser) {
-        return authUser != null ? authUser.getId() : null;
+    public ProjectDatabaseMapper(ProjectDatabaseUserMapper projectDatabaseUserMapper, ProjectAgentBaseValidator projectAgentValidator) {
+        this.projectDatabaseUserMapper = projectDatabaseUserMapper;
+        this.projectAgentValidator = projectAgentValidator;
     }
 
-    default AuthUser mapIdToAuthUser(String id) {
-        if (id == null) return null;
-        AuthUser user = new AuthUser();
-        user.setId(id);
-        return user;
+    @Override
+    public ProjectDatabaseDto toDto(ProjectDatabase entity) {
+
+        List<ProjectDatabaseUser> members = entity.getMembers();
+        ProjectAgent agent = entity.getAgent();
+
+        List<ProjectDatabaseUserDto> memberList = members.stream()
+                .map(projectDatabaseUserMapper::toDto)
+                .collect(Collectors.toList());
+
+        return ProjectDatabaseDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .agentId(agent.getId())
+                .members(memberList)
+                .build();
     }
 
-    default ProjectAgent mapIdToProjectAgent(String id) {
-        if (id == null) return null;
-        ProjectAgent agent = new ProjectAgent();
-        agent.setId(id);
-        return agent;
+
+    @Override
+    public ProjectDatabase fromCreateDto(ProjectDatabaseCreateDto dto) {
+        ProjectDatabase entity = new ProjectDatabase();
+        ProjectAgent agent = projectAgentValidator.existsAndGet(dto.getAgentId());
+        entity.setAgent(agent);
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        return entity;
     }
+
+    @Override
+    public void fromUpdateDto(ProjectDatabaseUpdateDto dto, ProjectDatabase entity) {
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setAgent(projectAgentValidator.existsAndGet(dto.getAgentId()));
+    }
+
 }

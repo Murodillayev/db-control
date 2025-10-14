@@ -2,9 +2,9 @@ package uz.pdp.dbcontrol.service.base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.pdp.dbcontrol.exception.NotFoundException;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.base.IdEntity;
-import uz.pdp.dbcontrol.validation.Validator;
+import uz.pdp.dbcontrol.validation.BaseValidator;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ public abstract class AbstractCrudService<
         UD,
         D,
         R extends JpaRepository<E, String>,
-        M extends InterfaceMapper<D, CD, UD, E>,
-        V extends Validator<CD, UD>
+        M extends BaseMapper<D, CD, UD, E>,
+        V extends BaseValidator<CD, UD, E>
         > implements CrudService<CD, UD, D> {
 
     private final R repository;
@@ -31,7 +31,7 @@ public abstract class AbstractCrudService<
     @Override
     public D create(CD dto) {
         validator.validateForCreate(dto);
-        E entity = mapper.toEntityFromCreate(dto);
+        E entity = mapper.fromCreateDto(dto);
         repository.save(entity);
         return mapper.toDto(entity);
     }
@@ -41,7 +41,7 @@ public abstract class AbstractCrudService<
         validator.validateForUpdate(dto);
         E entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Entity not found"));
-        mapper.updateEntityFromDto(dto, entity);
+        mapper.fromUpdateDto(dto, entity);
         repository.save(entity);
         return mapper.toDto(entity);
     }

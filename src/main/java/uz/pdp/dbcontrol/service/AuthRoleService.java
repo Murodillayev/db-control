@@ -18,7 +18,7 @@ public class AuthRoleService extends AbstractCrudService<
                 AuthRoleDto,
                 AuthRoleRepository,
                 AuthRoleMapper,
-                AuthRoleValidator
+        AuthRoleValidator
                 > {
 
     public AuthRoleService(AuthRoleRepository repository, AuthRoleMapper mapper, AuthRoleValidator validator) {

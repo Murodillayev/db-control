@@ -8,7 +8,7 @@ import uz.pdp.dbcontrol.mapper.ProjectDatabaseUserMapper;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
 import uz.pdp.dbcontrol.repository.ProjectDatabaseUserRepository;
 import uz.pdp.dbcontrol.service.base.AbstractCrudService;
-import uz.pdp.dbcontrol.validation.ProjectDatabaseUserValidator;
+import uz.pdp.dbcontrol.validation.ProjectDatabaseUserBaseValidator;
 
 @Service
 public class ProjectDatabaseUserService extends AbstractCrudService<
@@ -18,9 +18,9 @@ public class ProjectDatabaseUserService extends AbstractCrudService<
         ProjectDatabaseUserDto,
         ProjectDatabaseUserRepository,
         ProjectDatabaseUserMapper,
-        ProjectDatabaseUserValidator
+        ProjectDatabaseUserBaseValidator
         > {
-    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserValidator validator) {
+    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserBaseValidator validator) {
         super(repository, mapper, validator);
     }
 }

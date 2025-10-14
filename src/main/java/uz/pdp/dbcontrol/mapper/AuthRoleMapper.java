@@ -2,20 +2,17 @@ package uz.pdp.dbcontrol.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleCreateDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleUpdateDto;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.AuthPermission;
 import uz.pdp.dbcontrol.model.entity.AuthRole;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AuthRoleMapper
-        extends InterfaceMapper<AuthRoleDto, AuthRoleCreateDto, AuthRoleUpdateDto, AuthRole> {
+        extends BaseMapper<AuthRoleDto, AuthRoleCreateDto, AuthRoleUpdateDto, AuthRole> {
 
     @Override
     @Mapping(
@@ -24,14 +21,9 @@ public interface AuthRoleMapper
     )
     AuthRoleDto toDto(AuthRole entity);
 
-    @Override
     @Mapping(source = "permissionIds", target = "permissions")
-    AuthRole toEntityFromCreate(AuthRoleCreateDto dto);
+    AuthRole fromUpdateDto(AuthRoleCreateDto dto);
 
-    @Override
-    @Mapping(source = "permissionIds", target = "permissions")
-    void updateEntityFromDto(AuthRoleUpdateDto dto,
-                             @MappingTarget AuthRole entity);
 
     default AuthPermission mapIdToAuthPermission(String id) {
         if (id == null) return null;

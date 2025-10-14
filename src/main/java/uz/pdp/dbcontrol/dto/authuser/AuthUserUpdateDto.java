@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthUserUpdateDto {
     private String username;
-    private String password;
     private String dbUsername;
     private String dbPassword;
     private String email;

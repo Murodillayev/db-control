@@ -3,13 +3,15 @@ package uz.pdp.dbcontrol.validation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserCreateDto;
+import uz.pdp.dbcontrol.dto.authuser.AuthUserDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthUser;
 
 import java.util.regex.Pattern;
 
 @Component
-public class AuthUserValidator implements Validator<AuthUserCreateDto, AuthUserUpdateDto> {
+public class AuthUserBaseValidator implements BaseValidator<AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
 
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}$");

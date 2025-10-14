@@ -1,13 +1,19 @@
 package uz.pdp.dbcontrol.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleCreateDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleUpdateDto;
+import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthRole;
+import uz.pdp.dbcontrol.repository.AuthRoleRepository;
 
 @Component
-public class AuthRoleValidator implements Validator<AuthRoleCreateDto, AuthRoleUpdateDto> {
+@RequiredArgsConstructor
+public class AuthRoleValidator implements BaseValidator<AuthRoleCreateDto, AuthRoleUpdateDto, AuthRole> {
+    private final AuthRoleRepository repository;
 
     @Override
     public void validateForCreate(AuthRoleCreateDto dto) {
@@ -36,5 +42,12 @@ public class AuthRoleValidator implements Validator<AuthRoleCreateDto, AuthRoleU
 
         if (dto.getPermissionIds() == null || dto.getPermissionIds().isEmpty())
             throw new ValidationException("Kamida bitta permission tanlanishi kerak");
+    }
+
+    @Override
+    public AuthRole existsAndGet(String id) {
+        return repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Role with id '" + id + "' not found")
+        );
     }
 }

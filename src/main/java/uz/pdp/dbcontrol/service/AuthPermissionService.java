@@ -8,7 +8,7 @@ import uz.pdp.dbcontrol.mapper.AuthPermissionMapper;
 import uz.pdp.dbcontrol.model.entity.AuthPermission;
 import uz.pdp.dbcontrol.repository.AuthPermissionRepository;
 import uz.pdp.dbcontrol.service.base.AbstractCrudService;
-import uz.pdp.dbcontrol.validation.AuthPermissionValidator;
+import uz.pdp.dbcontrol.validation.AuthPermissionBaseValidator;
 
 @Service
 public class AuthPermissionService extends AbstractCrudService<
@@ -18,9 +18,9 @@ public class AuthPermissionService extends AbstractCrudService<
                 AuthPermissionDto,
                 AuthPermissionRepository,
                 AuthPermissionMapper,
-                AuthPermissionValidator
+        AuthPermissionBaseValidator
                 > {
-    public AuthPermissionService(AuthPermissionRepository repository, AuthPermissionMapper mapper, AuthPermissionValidator validator) {
+    public AuthPermissionService(AuthPermissionRepository repository, AuthPermissionMapper mapper, AuthPermissionBaseValidator validator) {
         super(repository, mapper, validator);
     }
 }

@@ -3,11 +3,14 @@ package uz.pdp.dbcontrol.validation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionCreateDto;
+import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthPermission;
 
 @Component
-public class AuthPermissionValidator implements Validator<AuthPermissionCreateDto, AuthPermissionUpdateDto> {
+public class AuthPermissionBaseValidator
+        implements BaseValidator<AuthPermissionCreateDto, AuthPermissionUpdateDto, AuthPermission> {
 
     @Override
     public void validateForCreate(AuthPermissionCreateDto dto) {

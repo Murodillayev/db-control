@@ -1,13 +1,22 @@
 package uz.pdp.dbcontrol.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseCreateDto;
+import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseDto;
 import uz.pdp.dbcontrol.dto.projectdatabase.ProjectDatabaseUpdateDto;
+import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.ProjectDatabase;
+import uz.pdp.dbcontrol.repository.ProjectDatabaseRepository;
 
 @Component
-public class ProjectDatabaseValidator implements Validator<ProjectDatabaseCreateDto, ProjectDatabaseUpdateDto> {
+@RequiredArgsConstructor
+public class ProjectDatabaseBaseValidator
+        implements BaseValidator<ProjectDatabaseCreateDto, ProjectDatabaseUpdateDto, ProjectDatabase> {
+
+    private final ProjectDatabaseRepository repository;
 
     @Override
     public void validateForCreate(ProjectDatabaseCreateDto dto) {
@@ -34,7 +43,11 @@ public class ProjectDatabaseValidator implements Validator<ProjectDatabaseCreate
         if (!StringUtils.hasText(dto.getAgentId()))
             throw new ValidationException("Project agent tanlanmagan");
 
-        if (dto.getMemberIds() == null || dto.getMemberIds().isEmpty())
-            throw new ValidationException("Kamida bitta member tanlanishi kerak");
+    }
+
+    @Override
+    public ProjectDatabase existsAndGet(String id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Project database '" + id + "' not found"));
     }
 }

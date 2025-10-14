@@ -1,40 +1,60 @@
 package uz.pdp.dbcontrol.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
+import uz.pdp.dbcontrol.dto.IdNameDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserCreateDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserUpdateDto;
-import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
+import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.AuthRole;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
+import uz.pdp.dbcontrol.validation.AuthRoleValidator;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface AuthUserMapper
-        extends InterfaceMapper<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
+@Component
+public class AuthUserMapper
+        implements BaseMapper<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, AuthUser> {
 
-    @Override
-    @Mapping(source = "role.id", target = "roleId")
-    AuthUserDto toDto(AuthUser entity);
 
-    @Override
-    @Mapping(source = "roleId", target = "role.id")
-    AuthUser toEntityFromCreate(AuthUserCreateDto dto);
+    private final AuthRoleValidator authRoleValidator;
 
-    @Override
-    @Mapping(source = "roleId", target = "role.id")
-    void updateEntityFromDto(AuthUserUpdateDto dto,@MappingTarget AuthUser entity);
-
-    default String mapRoleToId(AuthRole role){
-        return role!=null?role.getId():null;
+    public AuthUserMapper(AuthRoleValidator authRoleValidator) {
+        this.authRoleValidator = authRoleValidator;
     }
 
-    default AuthRole mapIdToRole(String id){
-        if (id==null)return null;
-        AuthRole authRole=new AuthRole();
-        authRole.setId(id);
-        return authRole;
+    @Override
+    public AuthUserDto toDto(AuthUser entity) {
+        AuthRole role = entity.getRole();
+        IdNameDto roleDto = (role == null) ? null : IdNameDto.builder()
+                .id(role.getId())
+                .name(role.getName())
+                .build();
+
+        return AuthUserDto.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .email(entity.getEmail())
+                .role(roleDto)
+                .build();
+    }
+
+    @Override
+    public AuthUser fromCreateDto(AuthUserCreateDto dto) {
+
+        AuthUser entity = new AuthUser();
+        entity.setUsername(dto.getUsername());
+        entity.setEmail(dto.getEmail());
+        entity.setRole();
+        return null;
+    }
+
+    @Override
+    public void fromUpdateDto(AuthUserUpdateDto dto, AuthUser entity) {
+        AuthRole role = authRoleValidator.existsAndGet(dto.getRoleId());
+        entity.setUsername(dto.getUsername());
+        entity.setEmail(dto.getEmail());
+        entity.setPhone(dto.getPhone());
+        entity.setDbUsername(dto.getDbUsername());
+        entity.setDbPassword(dto.getDbPassword());
+        entity.setRole(role);
     }
 }
