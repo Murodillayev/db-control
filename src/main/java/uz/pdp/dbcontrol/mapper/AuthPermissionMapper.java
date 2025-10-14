@@ -1,25 +1,33 @@
 package uz.pdp.dbcontrol.mapper;
 
-import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionCreateDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionUpdateDto;
 import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.AuthPermission;
-
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface AuthPermissionMapper
-        extends BaseMapper<AuthPermissionDto, AuthPermissionCreateDto, AuthPermissionUpdateDto, AuthPermission> {
-
-    @Override
-    AuthPermissionDto toDto(AuthPermission entity);
+@Component
+public class AuthPermissionMapper
+        implements BaseMapper<AuthPermissionDto, AuthPermissionCreateDto, AuthPermissionUpdateDto, AuthPermission> {
 
     @Override
-    AuthPermission fromCreateDto(AuthPermissionCreateDto dto);
+    AuthPermissionDto toDto(AuthPermission entity){
+        return AuthPermissionDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .code(entity.getCode())
+                .build();
+    }
 
     @Override
-    void fromUpdateDto(AuthPermissionUpdateDto dto,
-                             @MappingTarget AuthPermission entity);
+    AuthPermission fromCreateDto(AuthPermissionCreateDto dto){
+        return new AuthPermission(dto.getName(), dto.getCode());
+    }
+
+    @Override
+    void fromUpdateDto(AuthPermissionUpdateDto dto, @MappingTarget AuthPermission entity){
+        entity.setName(dto.getName());
+        entity.setCode(dto.getCode());
+    }
 }

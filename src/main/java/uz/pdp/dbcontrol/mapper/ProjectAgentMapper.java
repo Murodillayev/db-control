@@ -10,14 +10,28 @@ import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ProjectAgentMapper
-        extends BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
+public class ProjectAgentMapper
+        implements BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
     @Override
-    ProjectAgentDto toDto(ProjectAgent entity);
+    ProjectAgentDto toDto(ProjectAgent entity){
+        return ProjectAgentDto.builder()
+                .id(entity.getId())
+                .callbackUrl(entity.getCallbackUrl())
+                .databaseUrl(entity.getDatabaseUrl())
+                .databaseUsername(entity.getDatabaseUsername())
+                .build();
+    }
 
     @Override
-    ProjectAgent fromCreateDto(ProjectAgentCreateDto dto);
+    ProjectAgent fromCreateDto(ProjectAgentCreateDto dto){
+        return new ProjectAgent(dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
+    }
 
     @Override
-    void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity);
+    void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity){
+        entity.setDatabasePassword(dto.getDatabasePassword());
+        entity.setDatabaseUrl(dto.getDatabaseUrl());
+        entity.setCallbackUrl(dto.getCallbackUrl());
+        entity.setDatabaseUsername(dto.getDatabaseUsername());
+    }
 }
