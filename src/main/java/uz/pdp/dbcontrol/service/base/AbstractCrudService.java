@@ -2,7 +2,6 @@ package uz.pdp.dbcontrol.service.base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.pdp.dbcontrol.criteria.BaseCriteria;
-import uz.pdp.dbcontrol.exception.NotFoundException;
 import uz.pdp.dbcontrol.mapper.base.BaseMapper;
 import uz.pdp.dbcontrol.model.base.IdEntity;
 import uz.pdp.dbcontrol.validation.BaseValidator;
@@ -41,8 +40,7 @@ public abstract class AbstractCrudService<
     @Override
     public D update(String id, UD dto) {
         validator.validateForUpdate(dto);
-        E entity = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Entity not found"));
+        E entity = validator.existsAndGet(id);
         mapper.fromUpdateDto(dto, entity);
         repository.save(entity);
         return mapper.toDto(entity);
@@ -50,8 +48,7 @@ public abstract class AbstractCrudService<
 
     @Override
     public void delete(String id) {
-        E entity = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Entity not found"));
+        E entity = validator.existsAndGet(id);
         entity.setDeleted(true);
         repository.save(entity);
     }
