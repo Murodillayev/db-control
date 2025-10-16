@@ -3,19 +3,38 @@ spring:
     username: macbookpro
     password: 19801980
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/db_control?currentSchema=test_fly
+    url: jdbc:postgresql://localhost:5432/db_control?currentSchema=test_liq
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+  liquibase:
 
-  flyway:
-    locations: classpath:db/migration
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+#    contexts: prod
+
 
 jwt:
   secret-access: YWNjZXNzLXNlY3JldC1rZXktZGItY29udHJvbC1zZWN1cmUxMjM0
   secret-refresh: cmVmcmVzaC1zZWNyZXQta2V5LWRiLWNvbnRyb2wtc2VjdXJlMTIzNA==
   expiration-access: 600000
   expiration-refresh: 604800000
+
+
+# change log 1
+  # change set 1.1
+  # change set 1.2
+
+
+# change log 2
+  # change set 2.1
+
+
+# change log 3
+  # change set 3.1
+  # change set 3.2
+  # change set 3.3
+
 

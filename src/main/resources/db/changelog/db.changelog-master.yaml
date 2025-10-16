@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db/changelog/001-create_table_test.yaml
+  - include:
+      file: classpath:/db/changelog/002-drop_table_test.yaml
+  - include:
+      file: classpath:/db/changelog/003_create_table_sql.xml

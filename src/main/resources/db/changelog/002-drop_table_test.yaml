@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - context: prod
+  - changeSet:
+      id: 0002
+      author: sherzod
+      changes:
+        - dropTable:
+            tableName: test
