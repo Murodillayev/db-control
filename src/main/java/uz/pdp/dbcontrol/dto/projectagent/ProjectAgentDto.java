@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProjectAgentDto {
     private String id;
+    private String name;
     private String databaseUsername;
     private String databaseUrl;
     private String callbackUrl;

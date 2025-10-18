@@ -15,6 +15,7 @@ import uz.pdp.dbcontrol.model.base.BaseEntity;
 @Setter
 @Getter
 public class ProjectAgent extends BaseEntity {
+    private String name;
     private String databaseUsername;
     private String databasePassword;
     private String databaseUrl;

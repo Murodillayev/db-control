@@ -32,4 +32,13 @@ public class ProjectDatabaseUser extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "database_role_id")
     )
     private List<DatabaseRole> roles;
+
+    private Integer version;
 }
+
+
+// db user 1  v=1
+// db user 2  v=4      filter v > a_v         <- v=3;
+// db user 3  v=3
+// db user 4  v=1
+// db user 5  v=1

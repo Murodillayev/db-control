@@ -12,7 +12,7 @@ import uz.pdp.dbcontrol.service.ProjectAgentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/project-agents")
+@RequestMapping("/api/v1/project-agent")
 public class ProjectAgentController {
     private final ProjectAgentService service;
 

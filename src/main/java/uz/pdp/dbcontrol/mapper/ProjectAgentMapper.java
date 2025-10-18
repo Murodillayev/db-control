@@ -11,11 +11,12 @@ import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public class ProjectAgentMapper
-        implements BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto,ProjectAgent> {
+        implements BaseMapper<ProjectAgentDto, ProjectAgentCreateDto, ProjectAgentUpdateDto, ProjectAgent> {
     @Override
-    public ProjectAgentDto toDto(ProjectAgent entity){
+    public ProjectAgentDto toDto(ProjectAgent entity) {
         return ProjectAgentDto.builder()
                 .id(entity.getId())
+                .name(entity.getName())
                 .callbackUrl(entity.getCallbackUrl())
                 .databaseUrl(entity.getDatabaseUrl())
                 .databaseUsername(entity.getDatabaseUsername())
@@ -23,14 +24,15 @@ public class ProjectAgentMapper
     }
 
     @Override
-    public ProjectAgent fromCreateDto(ProjectAgentCreateDto dto){
-        return new ProjectAgent(dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
+    public ProjectAgent fromCreateDto(ProjectAgentCreateDto dto) {
+        return new ProjectAgent(dto.getName(), dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
     }
 
     @Override
-    public void fromUpdateDto(ProjectAgentUpdateDto dto,@MappingTarget ProjectAgent entity){
+    public void fromUpdateDto(ProjectAgentUpdateDto dto, @MappingTarget ProjectAgent entity) {
         entity.setDatabasePassword(dto.getDatabasePassword());
         entity.setDatabaseUrl(dto.getDatabaseUrl());
+        entity.setName(dto.getName());
         entity.setCallbackUrl(dto.getCallbackUrl());
         entity.setDatabaseUsername(dto.getDatabaseUsername());
     }
