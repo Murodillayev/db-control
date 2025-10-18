@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -16,7 +17,7 @@ public class EmailNotifyService {
         this.authUserRepository = authUserRepository;
     }
 
-    @Async
+
     public void notify(AuthUser authUser) {
         String otp = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 4);
         authUser.setOtp(otp);
@@ -25,6 +26,11 @@ public class EmailNotifyService {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+
+        if (new Random().nextBoolean()) {
+            throw new RuntimeException("cannot send moderator notification");
+
         }
         authUserRepository.save(authUser);
         log.info("Notifying email {}", authUser.getEmail());

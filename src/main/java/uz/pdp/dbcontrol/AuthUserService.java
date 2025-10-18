@@ -1,35 +1,26 @@
 package uz.pdp.dbcontrol;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthUserService {
 
-    private final EmailNotifyService emailNotifyService;
-    private final MVRefresher refresher;
-    private final TelegramNotifyService telegramNotifyService;
+    private final ApplicationEventPublisher publisher;
     private final AuthUserRepository repository;
 
-
+    @Transactional
     public AuthUser create(AuthUserDto dto) {
         AuthUser authUser = new AuthUser();
         authUser.setUsername(dto.getUsername());
         authUser.setPassword(dto.getPassword());
         authUser.setEmail(dto.getEmail());
         authUser.setName(dto.getName());
-
-        // send notify moderator
-        telegramNotifyService.notifyRegisterUser(authUser);
-
-        // refresh statistic materialized view
-        refresher.refreshStatistics();
-
-        // send notify email
-
-        emailNotifyService.notify(authUser);
         repository.save(authUser);
+        publisher.publishEvent(new CreateUserEvent(this, authUser));
         return authUser;
 
 
