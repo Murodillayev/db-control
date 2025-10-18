@@ -3,14 +3,9 @@ spring:
     username: macbookpro
     password: 19801980
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/db_control
+    url: jdbc:postgresql://localhost:5432/test_eop
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-jwt:
-  secret-access: YWNjZXNzLXNlY3JldC1rZXktZGItY29udHJvbC1zZWN1cmUxMjM0
-  secret-refresh: cmVmcmVzaC1zZWNyZXQta2V5LWRiLWNvbnRyb2wtc2VjdXJlMTIzNA==
-  expiration-access: 600000
-  expiration-refresh: 604800000

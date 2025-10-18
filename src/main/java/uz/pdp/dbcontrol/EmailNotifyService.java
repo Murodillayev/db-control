@@ -1,0 +1,33 @@
+package uz.pdp.dbcontrol;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+@Slf4j
+public class EmailNotifyService {
+
+    private final AuthUserRepository authUserRepository;
+
+    public EmailNotifyService(AuthUserRepository authUserRepository) {
+        this.authUserRepository = authUserRepository;
+    }
+
+    @Async
+    public void notify(AuthUser authUser) {
+        String otp = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 4);
+        authUser.setOtp(otp);
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        authUserRepository.save(authUser);
+        log.info("Notifying email {}", authUser.getEmail());
+    }
+
+}
