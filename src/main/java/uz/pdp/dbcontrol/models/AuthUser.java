@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

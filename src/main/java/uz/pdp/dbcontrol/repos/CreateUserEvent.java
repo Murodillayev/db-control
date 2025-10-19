@@ -1,9 +1,9 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.repos;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.EventListener;
+import uz.pdp.dbcontrol.models.AuthUser;
 
 @Slf4j
 @Getter

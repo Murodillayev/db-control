@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.models.dto;
 
 import lombok.Builder;
 import lombok.Data;

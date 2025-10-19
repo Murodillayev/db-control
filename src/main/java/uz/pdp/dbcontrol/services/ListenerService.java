@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -6,9 +6,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
+import uz.pdp.dbcontrol.repos.CreateUserEvent;
+import uz.pdp.dbcontrol.models.MVRefresher;
 
 @Service
 @RequiredArgsConstructor

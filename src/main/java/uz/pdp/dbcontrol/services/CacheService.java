@@ -1,6 +1,8 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.services;
 
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.repos.CreateUserEvent;
+import uz.pdp.dbcontrol.models.AuthUser;
 
 import java.util.LinkedList;
 import java.util.Queue;

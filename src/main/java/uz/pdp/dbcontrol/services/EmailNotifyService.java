@@ -1,8 +1,9 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.repos.AuthUserRepository;
+import uz.pdp.dbcontrol.models.AuthUser;
 
 import java.util.Random;
 import java.util.UUID;

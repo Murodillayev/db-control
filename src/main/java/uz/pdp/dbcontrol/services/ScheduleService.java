@@ -1,8 +1,9 @@
-package uz.pdp.dbcontrol;
+package uz.pdp.dbcontrol.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.repos.CreateUserEvent;
 
 @Service
 @Slf4j
