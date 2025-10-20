@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol.security;
+package uz.pdp.dbcontrol.config.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -6,24 +6,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
-                                   UserDetailsService userDetailsService) {
+                                   CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userDetailsService = userDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -33,24 +30,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        String token = null;
-        String username = null;
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            username = jwtTokenProvider.getUsernameFromToken(token, false);
-        }
+            String token = authHeader.substring(7);
+            String username = jwtTokenProvider.getUsernameFromToken(token, false);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-            if (jwtTokenProvider.validateToken(token, false)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                if (jwtTokenProvider.validateToken(token, false)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
         }
 

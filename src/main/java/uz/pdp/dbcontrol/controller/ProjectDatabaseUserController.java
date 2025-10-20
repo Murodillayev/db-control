@@ -3,6 +3,9 @@ package uz.pdp.dbcontrol.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
+import uz.pdp.dbcontrol.dto.DataResponse;
+import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserUpdateDto;
@@ -35,10 +38,9 @@ public class ProjectDatabaseUserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDatabaseUserDto>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<DataResponse<List<ProjectDatabaseUserDto>>> getAll(BaseCriteria criteria) {
+        return ResponseEntity.ok(service.getAll(criteria));
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(id);

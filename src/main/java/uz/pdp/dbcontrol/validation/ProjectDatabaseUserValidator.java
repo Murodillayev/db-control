@@ -5,9 +5,16 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserCreateDto;
 import uz.pdp.dbcontrol.dto.projectdatabaseuser.ProjectDatabaseUserUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
+import uz.pdp.dbcontrol.repository.ProjectDatabaseUserRepository;
 
 @Component
-public class ProjectDatabaseUserValidator implements Validator<ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto> {
+public class ProjectDatabaseUserValidator implements Validator<
+        ProjectDatabaseUserCreateDto,
+        ProjectDatabaseUserUpdateDto,
+        ProjectDatabaseUserRepository,
+        ProjectDatabaseUser
+        > {
 
     @Override
     public void validateForCreate(ProjectDatabaseUserCreateDto dto) {

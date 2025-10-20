@@ -3,6 +3,9 @@ package uz.pdp.dbcontrol.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
+import uz.pdp.dbcontrol.dto.DataResponse;
+import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleCreateDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleDto;
 import uz.pdp.dbcontrol.dto.databaserole.DatabaseRoleUpdateDto;
@@ -35,10 +38,9 @@ public class DatabaseRoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DatabaseRoleDto>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<DataResponse<List<DatabaseRoleDto>>> getAll(BaseCriteria criteria) {
+        return ResponseEntity.ok(service.getAll(criteria));
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(id);

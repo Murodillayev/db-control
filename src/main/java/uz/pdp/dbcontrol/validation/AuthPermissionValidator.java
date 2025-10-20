@@ -5,9 +5,15 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionCreateDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthPermission;
+import uz.pdp.dbcontrol.repository.AuthPermissionRepository;
 
 @Component
-public class AuthPermissionValidator implements Validator<AuthPermissionCreateDto, AuthPermissionUpdateDto> {
+public class AuthPermissionValidator implements Validator<
+        AuthPermissionCreateDto,
+        AuthPermissionUpdateDto,
+        AuthPermissionRepository,
+        AuthPermission> {
 
     @Override
     public void validateForCreate(AuthPermissionCreateDto dto) {

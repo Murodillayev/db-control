@@ -1,4 +1,4 @@
-package uz.pdp.dbcontrol.dto;
+package uz.pdp.dbcontrol.dto.auth;
 
 import lombok.Data;
 

@@ -26,5 +26,5 @@ public class ProjectDatabase extends BaseEntity {
     private ProjectAgent agent;
 
     @OneToMany
-    private List<AuthUser> members;
+    private List<ProjectDatabaseUser> members;
 }

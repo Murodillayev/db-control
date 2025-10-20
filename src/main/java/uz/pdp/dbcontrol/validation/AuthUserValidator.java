@@ -5,11 +5,17 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserCreateDto;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthUser;
+import uz.pdp.dbcontrol.repository.AuthUserRepository;
 
 import java.util.regex.Pattern;
 
 @Component
-public class AuthUserValidator implements Validator<AuthUserCreateDto, AuthUserUpdateDto> {
+public class AuthUserValidator implements Validator<
+        AuthUserCreateDto,
+        AuthUserUpdateDto,
+        AuthUserRepository,
+        AuthUser> {
 
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}$");

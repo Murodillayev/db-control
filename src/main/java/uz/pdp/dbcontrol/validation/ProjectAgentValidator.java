@@ -5,9 +5,16 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentCreateDto;
 import uz.pdp.dbcontrol.dto.projectagent.ProjectAgentUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.ProjectAgent;
+import uz.pdp.dbcontrol.repository.ProjectAgentRepository;
 
 @Component
-public class ProjectAgentValidator implements Validator<ProjectAgentCreateDto, ProjectAgentUpdateDto> {
+public class ProjectAgentValidator implements Validator<
+        ProjectAgentCreateDto,
+        ProjectAgentUpdateDto,
+        ProjectAgentRepository,
+        ProjectAgent
+        > {
 
     @Override
     public void validateForCreate(ProjectAgentCreateDto dto) {

@@ -11,6 +11,7 @@ import uz.pdp.dbcontrol.mapper.base.InterfaceMapper;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.model.entity.ProjectAgent;
 import uz.pdp.dbcontrol.model.entity.ProjectDatabase;
+import uz.pdp.dbcontrol.model.entity.ProjectDatabaseUser;
 
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -32,13 +33,13 @@ public interface ProjectDatabaseMapper
     @Mapping(source = "memberIds", target = "members")
     void updateEntityFromDto(ProjectDatabaseUpdateDto dto,@MappingTarget ProjectDatabase entity);
 
-    default String mapAuthUserToId(AuthUser authUser) {
-        return authUser != null ? authUser.getId() : null;
+    default String mapAuthUserToId(ProjectDatabaseUser projectDatabaseUser) {
+        return projectDatabaseUser != null ? projectDatabaseUser.getId() : null;
     }
 
-    default AuthUser mapIdToAuthUser(String id) {
+    default ProjectDatabaseUser mapIdToAuthUser(String id) {
         if (id == null) return null;
-        AuthUser user = new AuthUser();
+        ProjectDatabaseUser user = new ProjectDatabaseUser();
         user.setId(id);
         return user;
     }

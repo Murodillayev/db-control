@@ -1,9 +1,10 @@
-package uz.pdp.dbcontrol.security;
+package uz.pdp.dbcontrol.config.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.dbcontrol.model.entity.AuthUser;
 import uz.pdp.dbcontrol.repository.AuthUserRepository;
 
@@ -16,8 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 

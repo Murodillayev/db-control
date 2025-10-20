@@ -5,9 +5,15 @@ import org.springframework.util.StringUtils;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleCreateDto;
 import uz.pdp.dbcontrol.dto.authrole.AuthRoleUpdateDto;
 import uz.pdp.dbcontrol.exception.ValidationException;
+import uz.pdp.dbcontrol.model.entity.AuthRole;
+import uz.pdp.dbcontrol.repository.AuthRoleRepository;
 
 @Component
-public class AuthRoleValidator implements Validator<AuthRoleCreateDto, AuthRoleUpdateDto> {
+public class AuthRoleValidator implements Validator<
+        AuthRoleCreateDto,
+        AuthRoleUpdateDto,
+        AuthRoleRepository,
+        AuthRole> {
 
     @Override
     public void validateForCreate(AuthRoleCreateDto dto) {

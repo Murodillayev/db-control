@@ -1,6 +1,7 @@
 package uz.pdp.dbcontrol.service;
 
 import org.springframework.stereotype.Service;
+import uz.pdp.dbcontrol.criteria.BaseCriteria;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionCreateDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionDto;
 import uz.pdp.dbcontrol.dto.authpermission.AuthPermissionUpdateDto;
@@ -12,14 +13,15 @@ import uz.pdp.dbcontrol.validation.AuthPermissionValidator;
 
 @Service
 public class AuthPermissionService extends AbstractCrudService<
-                AuthPermission,
-                AuthPermissionCreateDto,
-                AuthPermissionUpdateDto,
-                AuthPermissionDto,
-                AuthPermissionRepository,
-                AuthPermissionMapper,
-                AuthPermissionValidator
-                > {
+        AuthPermission,
+        AuthPermissionCreateDto,
+        AuthPermissionUpdateDto,
+        AuthPermissionDto,
+        BaseCriteria,
+        AuthPermissionRepository,
+        AuthPermissionMapper,
+        AuthPermissionValidator
+        > {
     public AuthPermissionService(AuthPermissionRepository repository, AuthPermissionMapper mapper, AuthPermissionValidator validator) {
         super(repository, mapper, validator);
     }
