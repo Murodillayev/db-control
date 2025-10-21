@@ -14,7 +14,6 @@ public class CacheService {
         cache = cacheManager.getCache("products");
     }
 
-    @SuppressWarnings("undcheked")
     public List<Product> getProducts(String key) {
         return (List<Product>) cache.get(key);
     }
@@ -23,5 +22,7 @@ public class CacheService {
     public void put(String key, List<Product> products) {
         cache.put(key, products);
     }
+
+
 
 }
