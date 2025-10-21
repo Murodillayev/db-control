@@ -28,6 +28,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<Product>> get() {
+
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 

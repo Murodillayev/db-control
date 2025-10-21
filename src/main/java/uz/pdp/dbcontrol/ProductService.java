@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+    private final RedisService redisService;
     private final ProductRepository repository;
-    private final CacheService cacheService;
 
     //    @CacheEvict(value = "products", allEntries = true)
     public Product create(ProductSaveDto dto) {
@@ -48,14 +48,14 @@ public class ProductService {
     @SneakyThrows
     @Cacheable(value = "products")
     public List<Product> getAll() {
-        List<Product> products = cacheService.getProducts("products");
-        if (products != null) {
-            return products;
+        List<Product> productList = redisService.get("products");
+        if (productList != null) {
+            return productList;
         }
-        List<Product> all = repository.findAll();
         Thread.sleep(3000);
-        cacheService.put("products",all);
-        return all;
+        productList = repository.findAll();
+        redisService.set("products", productList);
+        return productList;
     }
 
     //    @CacheEvict(value = "products", allEntries = true)
