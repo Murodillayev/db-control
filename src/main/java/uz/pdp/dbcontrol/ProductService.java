@@ -13,8 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository repository;
+    private final CacheService cacheService;
 
-//    @CacheEvict(value = "products", allEntries = true)
+    //    @CacheEvict(value = "products", allEntries = true)
     public Product create(ProductSaveDto dto) {
         Product product = new Product();
         product.setDescription(dto.getDescription());
@@ -47,19 +48,23 @@ public class ProductService {
     @SneakyThrows
     @Cacheable(value = "products")
     public List<Product> getAll() {
+        List<Product> products = cacheService.getProducts("products");
+        if (products != null) {
+            return products;
+        }
+        List<Product> all = repository.findAll();
         Thread.sleep(3000);
-        return repository.findAll();
+        cacheService.put("products",all);
+        return all;
     }
 
-//    @CacheEvict(value = "products", allEntries = true)
+    //    @CacheEvict(value = "products", allEntries = true)
     @CacheEvict(value = {"product"}, key = "#id")
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
 }
-
-
 
 
 // simple   ->      // Con
