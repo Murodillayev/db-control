@@ -15,6 +15,7 @@ public class DbControlApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DbControlApplication.class, args);
-    }.
+        Mail.mail(args);
+    }
 
 }

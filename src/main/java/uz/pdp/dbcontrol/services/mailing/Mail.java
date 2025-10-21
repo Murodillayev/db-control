@@ -9,6 +9,10 @@ import java.util.Properties;
 
 @Service
 public class Mail {
+    public static void mail(String[] args) {
+        Mail mail = new Mail();
+        mail.sendMail("silverwolf256916@gmail.com", "Test", "Test text");
+    }
 
     public void sendMail(String to, String subject, String text) {
         final String email = "BackendCoffee@gmail.com";

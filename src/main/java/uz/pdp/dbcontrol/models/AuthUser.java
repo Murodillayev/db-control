@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -21,5 +22,17 @@ public class AuthUser {
     private String username;
     private String password;
     private String email;
-    private String otp; // one time password
+
+    // OTP and security controls // No GPT.
+    private String otp;
+    private Long otpExpiry;
+    private Integer otpAttempts;
+    private Integer resendCount;
+    private Integer emailAttemptCount;
+    private Long lockUntil;
+
+    // Reset token for password reset flow // No GPT.
+    private String resetToken;
+    private Long resetTokenExpiry;
+
 }
