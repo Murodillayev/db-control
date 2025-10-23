@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uz.pdp.dbcontrol.model.base.BaseEntity;
 import uz.pdp.dbcontrol.model.base.IdEntity;
 
 import java.util.List;
