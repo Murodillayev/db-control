@@ -1,15 +1,14 @@
 package uz.pdp.dbcontrol;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.*;
-import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import uz.pdp.dbcontrol.test.Child2;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
-@TestMethodOrder(MethodOrderer.DisplayName.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class CalculatorTest {
 
     private Calculator calculator;
@@ -19,32 +18,33 @@ public class CalculatorTest {
         calculator = new Calculator();
     }
 
-    @Test
-    @Order(6)
-    @DisabledOnJre({JRE.JAVA_8, JRE.JAVA_11, JRE.JAVA_10, JRE.JAVA_9})
+    @RepeatedTest(value = 10, name = "{displayName} : {currentRepetition} : {totalRepetitions}")
+    @DisplayName("test add")
     public void testAdd() {
-        int a = 12;
-        int b = 13;
-        int expectedResult = 25;
-
+        int a = new Random().nextInt(100);
+        int b = new Random().nextInt(100);
+        int expectedResult = a + b;
         double result = calculator.add(a, b);
         Assertions.assertEquals(expectedResult, result);
     }
 
-    @Test
-    @Order(5)
-    @DisabledOnOs(value = OS.WINDOWS)
-    public void should_done_between_3_seconds() {
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+    public void should_done_between_3_seconds(int i) {
         int a = 12;
-        int b = 13;
-        Assertions.assertTimeout(Duration.of(3, ChronoUnit.SECONDS), () -> {
-            calculator.add(a, b);
+        Assertions.assertTimeout(Duration.of(1, ChronoUnit.SECONDS), () -> {
+            calculator.add(a, i);
         });
     }
 
+    @ParameterizedTest
+    @ValueSource(classes = {Child1.class, Child2.class})
+    public void testValueSource(Class<Base> baseClass) {
+
+        Assertions.assertEquals(baseClass.getPackageName(), "uz.pdp.dbcontrol");
+    }
+
     @Test
-    @Order(4)
-    @EnabledOnOs(value = OS.WINDOWS)
     public void test_subtract() {
         int a = 12;
         int b = 13;
@@ -54,9 +54,6 @@ public class CalculatorTest {
     }
 
     @Test
-    @Order(3)
-    @EnabledOnOs(value = {OS.MAC, OS.LINUX, OS.WINDOWS, OS.AIX})
-    @DisabledForJreRange(min = JRE.JAVA_17, max = JRE.JAVA_23)
     public void testMultiply() {
         int a = 12;
         int b = 13;
@@ -66,8 +63,6 @@ public class CalculatorTest {
     }
 
     @Test
-    @Order(2)
-    @DisabledIf(value = "disableBolsinmi")
     public void testDivide() {
         int a = 12;
         int b = 13;
@@ -76,16 +71,10 @@ public class CalculatorTest {
     }
 
     @Test
-    @Order(1)
-    @Disabled
     public void should_throw_exception_when_divide_by_zero() {
         int a = 12;
         int b = 0;
         Assertions.assertThrows(ArithmeticException.class, () -> calculator.div(a, b));
-    }
-
-    boolean disableBolsinmi() {
-        return new Random().nextBoolean();
     }
 
 

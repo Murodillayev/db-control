@@ -1,14 +1,8 @@
 package uz.pdp.dbcontrol;
 
-import lombok.SneakyThrows;
-
 public class Calculator {
 
-
-    @SneakyThrows
     public double add(double a, double b) {
-
-        Thread.sleep(2000);
         return a + b;
     }
 
