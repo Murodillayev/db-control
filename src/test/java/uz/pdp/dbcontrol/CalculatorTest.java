@@ -1,15 +1,14 @@
 package uz.pdp.dbcontrol;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import uz.pdp.dbcontrol.test.Child2;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Random;
-import java.util.stream.Stream;
 
 public class CalculatorTest {
 
@@ -20,29 +19,32 @@ public class CalculatorTest {
         calculator = new Calculator();
     }
 
-    @DisplayName("test add")
-    public void testAdd() {
-        int a = new Random().nextInt(100);
-        int b = new Random().nextInt(100);
-        int expectedResult = a + b;
-        double result = calculator.add(a, b);
-        Assertions.assertEquals(expectedResult, result);
+    @ParameterizedTest
+    @CsvSource(value = {
+            "a , b",
+            "1, 2",
+            "2, 3",
+            "12, 13",
+            "24, 31"
+
+
+    }, useHeadersInDisplayName = true)
+    public void testAdd(int a, int b) {
+        Assertions.assertEquals(a + b, calculator.add(a, b));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+    @CsvFileSource(resources = "/testcases.csv", useHeadersInDisplayName = true)
+    public void testAddByCsvFile(int a, int b) {
+        Assertions.assertEquals(a + b, calculator.add(a, b));
+    }
+
+    @Test
     public void should_done_between_3_seconds(int i) {
         int a = 12;
         Assertions.assertTimeout(Duration.of(1, ChronoUnit.SECONDS), () -> {
             calculator.add(a, i);
         });
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = {Child1.class, Child2.class})
-    public void testValueSource(Class<Base> baseClass) {
-
-        Assertions.assertEquals(baseClass.getPackageName(), "uz.pdp.dbcontrol");
     }
 
     @Test
@@ -78,18 +80,6 @@ public class CalculatorTest {
         Assertions.assertThrows(ArithmeticException.class, () -> calculator.div(a, b));
     }
 
-
-    @ParameterizedTest
-    @MethodSource(value = {"baseChildStream"})
-
-    public void testChildsMethod(Base base) {
-        Assertions.assertNotNull(base.m1());
-    }
-
-
-    public static Stream<Base> baseChildStream() {
-        return Stream.of(new Child1(), new Child2());
-    }
 
 }
 
