@@ -55,4 +55,12 @@ public class ProjectDatabaseUserController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/updates")
+    public ResponseEntity<ProjectDatabaseUserDto> updates(@PathVariable String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

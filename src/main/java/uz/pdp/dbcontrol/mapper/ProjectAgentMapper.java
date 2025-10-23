@@ -25,7 +25,7 @@ public class ProjectAgentMapper
 
     @Override
     public ProjectAgent fromCreateDto(ProjectAgentCreateDto dto) {
-        return new ProjectAgent(dto.getName(), dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
+        return new ProjectAgent(dto.getName(), dto.getUsername(), dto.getPassword(), dto.getDatabaseUrl(), dto.getCallbackUrl());
     }
 
     @Override

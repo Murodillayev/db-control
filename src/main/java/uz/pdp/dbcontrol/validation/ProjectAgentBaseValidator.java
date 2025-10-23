@@ -28,10 +28,10 @@ public class ProjectAgentBaseValidator
 
         ProjectAgentCreateDto dto = (ProjectAgentCreateDto) object;
 
-        if (!StringUtils.hasText(dto.getDatabaseUsername()))
+        if (!StringUtils.hasText(dto.getUsername()))
             throw new ValidationException("Database username bo‘sh bo‘lishi mumkin emas");
 
-        if (!StringUtils.hasText(dto.getDatabasePassword()))
+        if (!StringUtils.hasText(dto.getPassword()))
             throw new ValidationException("Database password bo‘sh bo‘lishi mumkin emas");
 
         if (!StringUtils.hasText(dto.getDatabaseUrl()))
@@ -40,11 +40,11 @@ public class ProjectAgentBaseValidator
         if (!dto.getDatabaseUrl().startsWith("jdbc:"))
             throw new ValidationException("Database URL 'jdbc:' bilan boshlanishi kerak");
 
-        if (!StringUtils.hasText(dto.getCallbackUrl()))
-            throw new ValidationException("Callback URL bo‘sh bo‘lishi mumkin emas");
+//        if (!StringUtils.hasText(dto.getCallbackUrl()))
+//            throw new ValidationException("Callback URL bo‘sh bo‘lishi mumkin emas");
 
-        if (!dto.getCallbackUrl().startsWith("http://") && !dto.getCallbackUrl().startsWith("https://"))
-            throw new ValidationException("Callback URL noto‘g‘ri formatda kiritilgan (http yoki https bilan boshlanishi kerak)");
+//        if (!dto.getCallbackUrl().startsWith("http://") && !dto.getCallbackUrl().startsWith("https://"))
+//            throw new ValidationException("Callback URL noto‘g‘ri formatda kiritilgan (http yoki https bilan boshlanishi kerak)");
     }
 
 
