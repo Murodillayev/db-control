@@ -2,12 +2,14 @@ package uz.pdp.dbcontrol;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uz.pdp.dbcontrol.test.Child2;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class CalculatorTest {
 
@@ -18,7 +20,6 @@ public class CalculatorTest {
         calculator = new Calculator();
     }
 
-    @RepeatedTest(value = 10, name = "{displayName} : {currentRepetition} : {totalRepetitions}")
     @DisplayName("test add")
     public void testAdd() {
         int a = new Random().nextInt(100);
@@ -77,6 +78,18 @@ public class CalculatorTest {
         Assertions.assertThrows(ArithmeticException.class, () -> calculator.div(a, b));
     }
 
+
+    @ParameterizedTest
+    @MethodSource(value = {"baseChildStream"})
+
+    public void testChildsMethod(Base base) {
+        Assertions.assertNotNull(base.m1());
+    }
+
+
+    public static Stream<Base> baseChildStream() {
+        return Stream.of(new Child1(), new Child2());
+    }
 
 }
 
