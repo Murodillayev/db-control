@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.dbcontrol.dto.LoginDto;
+import uz.pdp.dbcontrol.dto.LoginRequest;
+import uz.pdp.dbcontrol.dto.LoginResponse;
 import uz.pdp.dbcontrol.dto.authuser.AuthUserCreateDto;
 import uz.pdp.dbcontrol.service.AuthService;
 
@@ -21,16 +22,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginDto dto){
-        Map<String , String> tokens=authService.login(dto.getUsername(), dto.getPassword());
-        return ResponseEntity.ok(tokens);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String,String>> refresh(@RequestBody Map<String,String> request){
-        String refreshToken=request.get("refreshToken");
-        Map<String,String> tokens=authService.refresh(refreshToken);
-        return ResponseEntity.ok(tokens);
+    public ResponseEntity<LoginResponse> refresh(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        LoginResponse response = authService.refresh(refreshToken);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")

@@ -19,5 +19,5 @@ public class ProjectAgent extends BaseEntity {
     private String databaseUsername;
     private String databasePassword;
     private String databaseUrl;
-    private String callbackUrl;
+    private String callbackUrl;  // http://kun.uz/agent/postpdated
 }

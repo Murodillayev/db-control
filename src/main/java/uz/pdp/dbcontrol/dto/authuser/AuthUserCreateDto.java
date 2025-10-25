@@ -1,12 +1,14 @@
 package uz.pdp.dbcontrol.dto.authuser;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AuthUserCreateDto {
     private String name;
     private String username;
