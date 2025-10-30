@@ -1,16 +1,18 @@
-package uz.pdp.dbcontrol.dto.projectdatabase;
+package uz.pdp.dbcontrol;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDatabaseUpdateDto {
-    private String name;
+@Builder
+public class TodoDto {
+    private Integer id;
+    private String title;
     private String description;
-    private String agentId;
+    private Boolean completed;
+
 }
